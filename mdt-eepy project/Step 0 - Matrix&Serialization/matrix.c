@@ -4,13 +4,18 @@ Matrix multiply(Matrix m1, Matrix m2) {
     Matrix res = {0};
 
     if (m1.w != m2.h) {
-        return res;
+        return NULL;
     }
 
     res.h = m1.h;
     res.w = m2.w;
     res.n = res.h * res.w;
     res.d = calloc(res.n, sizeof(float));
+
+    if (res.d == NULL) {
+        perror("calloc");
+        return NULL;
+    }
 
     for (int i = 0; i < m1.h; i++) {
         for (int j = 0; j < m2.w; j++) {
@@ -50,6 +55,11 @@ Matrix scale(Matrix m, float s) {
     res.n = res.h * res.w;
     res.d = malloc(res.n * sizeof(float));
 
+    if (res.d == NULL) {
+        perror("malloc");
+        return NULL;
+    }
+
     for (int i = 0; i < res.n; i++) {
         res.d[i] = m.d[i] * s;
     }
@@ -63,6 +73,11 @@ Matrix add(Matrix m, float a) {
     res.w = m.w;
     res.n = res.h * res.w;
     res.d = malloc(res.n * sizeof(float));
+
+    if (res.d == NULL) {
+        perror("malloc");
+        return NULL;
+    }
 
     for (int i = 0; i < res.n; i++) {
         res.d[i] = m.d[i] + a;
