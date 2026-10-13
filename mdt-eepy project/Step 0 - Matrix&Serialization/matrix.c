@@ -66,7 +66,17 @@ Matrix scale(Matrix m, float s) {
 }
 
 Matrix add(Matrix m, float a) {
-	return NULL;
+    Matrix res = {0};
+    res.h = m.h;
+    res.w = m.w;
+    res.n = res.h * res.w;
+    res.d = malloc(res.n * sizeof(float));
+
+    for (int i = 0; i < res.n; i++) {
+        res.d[i] = m.d[i] + a;
+    }
+
+    return res;
 }
 
 void print(Matrix m) {
