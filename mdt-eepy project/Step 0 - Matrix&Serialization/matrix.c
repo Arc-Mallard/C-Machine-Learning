@@ -5,6 +5,7 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
+	printf("test if git works");
 	return NULL;
 }
 
