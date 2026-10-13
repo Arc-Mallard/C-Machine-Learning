@@ -24,14 +24,14 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
-	if (!m1 || !m2 || m1 -> n != m2 -> n) {return NULL;}
+	if (!m1.d || !m2.d || m1 -> n != m2 -> n) {return NULL;}
 	Matrix e = {m1 -> w, m1 -> h, m1 -> n, malloc(m1 -> n * sizeof(float))};
 	for (int i = 0; i < m1 -> n; i++) {e -> d[i] = m1 -> d[i] * m2 -> d[i];}
 	return e;
 }
 
 Matrix transpose(Matrix m) {
-	if (!m) {return NULL;}
+	if (!m.d) {return NULL;}
 	Matrix t = {
 		m -> h, m -> w, m -> n,
 		malloc(m -> n * sizeof(float))
@@ -82,12 +82,24 @@ void print(Matrix m) {
 }
 
 unsigned char* serialize(Matrix m) {
-	if (!m) {return NULL;}
-	char bytes[sizeof(m)];
-	memcpy(bytes, &m, sizeof(m));
+	if (!m.d) {return NULL;}
+	unsigned char* bytes = malloc(3 * sizeof(int) + m.n * sizeof(float));
+	if (!bytes) {return NULL;}
+
+	memcpy(bytes, &m.w, sizeof(m.w));
+	memcpy(bytes + 1 * sizeof(int), &m.w, sizeof(m.w));
+	memcpy(bytes + 2 * sizeof(int), &m.h, sizeof(m.w));
+	memcpy(bytes + 3 * sizeof(int), m.d, m.n * sizeof(float));
+
 	return bytes;
 }
 
 Matrix deserialize(unsigned char* m) {
-	return NULL;
+	Matrix d = {0};
+	memcpy(&d.w, m, sizeof(d.w));
+	memcpy(&d.h, m + 1 * sizeof(int), sizeof(d.h));
+	memcpy(&d.n, m + 2 * sizeof(int), sizeof(d.n));
+	d.d = malloc(d.n * sizeof(float));
+	memcpy(d.d, m + 3 * sizeof(int), d.n * sizeof(float));
+	return d;
 }
