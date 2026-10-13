@@ -8,9 +8,13 @@ typedef struct {
 
 // ALL matrices below should be treated as vectors
 
-Network train(Matrix inputs[], Matrix expected[], int epochs);
+Matrix forward(Matrix input);
 
-Matrix predict(Matrix input);
+Network backward(Network net, Matrix output, Matrix expected);
+
+Network train(Network net, Matrix inputs[], Matrix expected[], int epochs);
+
+Matrix predict(Network net, Matrix input);
 
 unsigned char* serializeNetwork(Network n);
 

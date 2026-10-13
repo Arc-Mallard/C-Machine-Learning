@@ -1,11 +1,19 @@
 // ALL matrices below should be treated as vectors
 #include "feedforward.h"
 
-Network train(Matrix inputs[], Matrix expected[], int epochs) {
+Matrix forward(Matrix input) {
+	return (Matrix) {0};
+}
+
+Network backward(Network net, Matrix output, Matrix expected) {
 	return (Network) {0};
 }
 
-Matrix predict(Matrix input) {
+Network train(Network net, Matrix inputs[], Matrix expected[], int epochs) {
+	return (Network) {0};
+}
+
+Matrix predict(Network net, Matrix input) {
 	return (Matrix) {0};
 }
 
