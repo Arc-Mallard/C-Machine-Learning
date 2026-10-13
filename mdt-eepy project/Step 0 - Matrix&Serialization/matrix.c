@@ -115,6 +115,7 @@ Matrix deserialize(unsigned char* m) {
 	memcpy(&d.h, m + 1 * sizeof(int), sizeof(d.h));
 	memcpy(&d.n, m + 2 * sizeof(int), sizeof(d.n));
 	d.d = malloc(d.n * sizeof(float));
+	if (!d.d) {return NULL;}
 	memcpy(d.d, m + 3 * sizeof(int), d.n * sizeof(float));
 	return d;
 }
