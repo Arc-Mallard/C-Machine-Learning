@@ -1,10 +1,12 @@
 #include "../matrix/matrix.h"
 
 typedef struct {
-
+	int size[]; Matrix weights[];
+	// These matrices are actually all vectors
+	Matrix biases[], activations[], preactivations[];
 } Network;
 
-// ALL matricies below should be treated as vectors
+// ALL matrices below should be treated as vectors
 
 Network train(Matrix inputs[], Matrix expected[], int epochs);
 
