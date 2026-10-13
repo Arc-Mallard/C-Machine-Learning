@@ -4,7 +4,7 @@ Matrix multiply(Matrix m1, Matrix m2) {
     Matrix res = {0};
 
     if (m1.w != m2.h) {
-        return NULL;
+        return res;
     }
 
     res.h = m1.h;
@@ -14,7 +14,7 @@ Matrix multiply(Matrix m1, Matrix m2) {
 
     if (res.d == NULL) {
         perror("calloc");
-        return NULL;
+        return res;
     }
 
     for (int i = 0; i < m1.h; i++) {
@@ -57,7 +57,7 @@ Matrix scale(Matrix m, float s) {
 
     if (res.d == NULL) {
         perror("malloc");
-        return NULL;
+        return res;
     }
 
     for (int i = 0; i < res.n; i++) {
@@ -76,7 +76,7 @@ Matrix add(Matrix m, float a) {
 
     if (res.d == NULL) {
         perror("malloc");
-        return NULL;
+        return res;
     }
 
     for (int i = 0; i < res.n; i++) {
