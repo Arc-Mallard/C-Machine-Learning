@@ -76,7 +76,8 @@ void print(Matrix m) {
 }
 
 unsigned char* serialize(Matrix m, char* f) {
-
+	FILE* file = fopen(f);
+	fwrite(file);
 	return NULL;
 }
 
