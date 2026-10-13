@@ -23,9 +23,13 @@ int main() {
 	printf("multiplying matrix 1 with matrix 2 \n");
 	print(test3); printf("\n");
 
-	Matrix test4 = transpose(test2);
+	Matrix test4 = transpose(test4);
 	printf("transposing multiplied matrix \n");
 	print(test4); printf("\n");
+
+	printf("serializing transposed matrix \n");
+	printf(deserialize(serialize(test4)));
+	printf("\n");
 
 	printf("Hello World!");
 }
