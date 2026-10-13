@@ -1,1 +1,0 @@
-// https://www.geeksforgeeks.org/machine-learning/what-is-sparse-categorical-crossentropy/

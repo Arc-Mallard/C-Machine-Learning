@@ -31,5 +31,5 @@ int main() {
 	print(deserializeMatrix(serializeMatrix(test4)));
 	printf("\n");
 
-	printf("Hello World!");
+	printf("Hello World!\n");
 }
