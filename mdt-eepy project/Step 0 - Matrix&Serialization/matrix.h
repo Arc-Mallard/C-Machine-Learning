@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 typedef struct {
-	int w, h;
+	int w, h, n;
 	float* d;
 } Matrix;
 
