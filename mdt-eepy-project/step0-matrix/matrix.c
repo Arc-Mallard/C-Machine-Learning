@@ -29,21 +29,21 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
-	if (!m1.d || !m2.d || m1 -> n != m2 -> n) {return NULL;}
-	Matrix e = {m1 -> w, m1 -> h, m1 -> n, malloc(m1 -> n * sizeof(float))};
-	for (int i = 0; i < m1 -> n; i++) {e -> d[i] = m1 -> d[i] * m2 -> d[i];}
+	if (!m1.d || !m2.d || m1.n != m2.n) {return NULL;}
+	Matrix e = {m1.w, m1.h, m1.n, malloc(m1.n * sizeof(float))};
+	for (int i = 0; i < m1.n; i++) {e.d[i] = m1.d[i] * m2.d[i];}
 	return e;
 }
 
 Matrix transpose(Matrix m) {
 	if (!m.d) {return NULL;}
 	Matrix t = {
-		m -> h, m -> w, m -> n,
-		malloc(m -> n * sizeof(float))
+		m.h, m.w, m.n,
+		malloc(m.n * sizeof(float))
 	};
-	for (int i = 0;  i < m -> w; i++) {
-		for (int j = 0; j < m -> h; j++) {
-			t -> d[j * m -> w + i] = m -> d[i * m -> w + j];
+	for (int i = 0;  i < m.w; i++) {
+		for (int j = 0; j < m.h; j++) {
+			t.d[j * m.w + i] = m.d[i * m.w + j];
 		}
 	} return t;
 }
