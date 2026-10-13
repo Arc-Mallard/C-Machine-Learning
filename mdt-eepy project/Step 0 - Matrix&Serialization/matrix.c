@@ -35,7 +35,8 @@ Matrix transpose(Matrix m) {
 	Matrix t = {
 		m -> h, m -> w, m -> n,
 		malloc(m -> n * sizeof(float))
-	}; for (int i = 0;  i < m -> w; i++) {
+	};
+	for (int i = 0;  i < m -> w; i++) {
 		for (int j = 0; j < m -> h; j++) {
 			t -> d[j * m -> w + i] = m -> d[i * m -> w + j];
 		}
