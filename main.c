@@ -28,7 +28,7 @@ int main() {
 	print(test4); printf("\n");
 
 	printf("serializing transposed matrix \n");
-	printf(deserialize(serialize(test4)));
+	print(deserialize(serialize(test4)));
 	printf("\n");
 
 	printf("Hello World!");
