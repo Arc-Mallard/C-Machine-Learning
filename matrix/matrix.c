@@ -98,7 +98,7 @@ void print(Matrix m) {
 
 unsigned char* serialize(Matrix m) {
 	unsigned char* bytes = malloc(3 * sizeof(int) + m.n * sizeof(float));
-	//if (!bytes || !m.d) {perror("serialize"); return bytes;}
+	if (!bytes || !m.d) {perror("serialize"); return bytes;}
 	memcpy(bytes, &m.w, sizeof(int));
 	memcpy(bytes + 1 * sizeof(int), &m.h, sizeof(int));
 	memcpy(bytes + 2 * sizeof(int), &m.n, sizeof(int));
@@ -112,7 +112,7 @@ Matrix deserialize(unsigned char* m) {
 	memcpy(&d.h, m + 1 * sizeof(int), sizeof(int));
 	memcpy(&d.n, m + 2 * sizeof(int), sizeof(int));
 	d.d = malloc(d.n * sizeof(float));
-	//if (!d.d) {perror("deserialize"); return d;}
+	if (!d.d) {perror("deserialize"); return d;}
 	memcpy(d.d, m + 3 * sizeof(int), d.n * sizeof(float));
 	return d;
 }
