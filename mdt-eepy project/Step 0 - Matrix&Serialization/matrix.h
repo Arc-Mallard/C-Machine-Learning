@@ -1,7 +1,7 @@
 
 typedef struct {
 	int w, h;
-	float* d[];
+	float* d;
 } Matrix;
 
 Matrix multiply(Matrix m1, Matrix m2);
