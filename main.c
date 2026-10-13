@@ -19,7 +19,7 @@ int main() {
 	printf("declaring matrix 2 \n");
 	print(test2); printf("\n");
 
-	Matrix test3 = multiply(test1, test1);
+	Matrix test3 = multiply(test1, test2);
 	printf("multiplying matrix 1 with matrix 2 \n");
 	print(test3); printf("\n");
 
