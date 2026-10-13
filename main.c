@@ -5,7 +5,7 @@
  *      Author: nicol
  */
 
-#include <stdio.h>
+#include "matrix/matrix.h"
 
 int main() {
 	printf("Hello World!");
