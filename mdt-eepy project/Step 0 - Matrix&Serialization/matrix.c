@@ -38,8 +38,7 @@ Matrix transpose(Matrix m) {
 	};
 	for (int i = 0;  i < m -> w; i++) {
 		for (int j = 0; j < m -> h; j++) {
-			for (int k = 0; k < )
-//			t -> d[j * m -> h + i] = m -> d[j];
+			t -> d[j * m -> h + i] = m -> d[j];
 
 //			[0, 0, 1, 1, 2, 2]
 
