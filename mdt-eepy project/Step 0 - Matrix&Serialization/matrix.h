@@ -16,4 +16,4 @@ Matrix add(Matrix m, float a);
 
 unsigned char* serialize(Matrix m);
 
-Matrix deserialize(char* m);
+Matrix deserialize(unsigned char* m);
