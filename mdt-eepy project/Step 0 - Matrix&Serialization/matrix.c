@@ -1,6 +1,7 @@
 #include "matrix.h"
 
 Matrix multiply(Matrix m1, Matrix m2) {
+    printf("multiply");
 	return NULL;
 }
 
