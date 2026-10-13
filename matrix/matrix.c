@@ -29,14 +29,14 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
-	if (!m1.d || !m2.d || m1.n != m2.n) {perror("elementwise"); return m1;}
+	//if (!m1.d || !m2.d || m1.n != m2.n) {perror("elementwise"); return m1;}
 	Matrix e = {m1.w, m1.h, m1.n, malloc(m1.n * sizeof(float))};
 	for (int i = 0; i < m1.n; i++) {e.d[i] = m1.d[i] * m2.d[i];}
 	return e;
 }
 
 Matrix transpose(Matrix m) {
-	if (!m.d) {perror("transpose"); return m;}
+	//if (!m.d) {perror("transpose"); return m;}
 	Matrix t = {
 		m.h, m.w, m.n,
 		malloc(m.n * sizeof(float))

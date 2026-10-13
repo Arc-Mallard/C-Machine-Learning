@@ -15,7 +15,7 @@ int main() {
 	print(test1); printf("\n");
 
 	float data2[] = {7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix test2 = {2, 3, 6, data2};
+	Matrix test2 = {3, 2, 6, data2};
 	printf("declaring matrix 2 \n");
 	print(test2); printf("\n");
 
