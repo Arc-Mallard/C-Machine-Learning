@@ -6,8 +6,10 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
-	printf("test if git works");
-	return NULL;
+	if (!m1 || !m2 || m1 -> n != m2 -> n) {return NULL;}
+	Matrix e = {m1 -> w, m1 -> h, m1 -> n, malloc(m1 -> n * sizeof(float))};
+	for (int i = 0; i < m1 -> n; i++) {e -> d[i] = m1 -> d[i] * m2 -> d[i];}
+	return e;
 }
 
 Matrix transpose(Matrix m) {
