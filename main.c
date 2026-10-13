@@ -23,7 +23,7 @@ int main() {
 	printf("multiplying matrix 1 with matrix 2 \n");
 	print(test3); printf("\n");
 
-	Matrix test4 = transpose(test3);
+	Matrix test4 = transpose(test2);
 	printf("transposing multiplied matrix \n");
 	print(test4); printf("\n");
 
