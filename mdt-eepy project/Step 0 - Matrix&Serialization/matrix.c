@@ -75,7 +75,8 @@ void print(Matrix m) {
 
 }
 
-unsigned char* serialize(Matrix m, FILE* f) {
+unsigned char* serialize(Matrix m, char* f) {
+
 	return NULL;
 }
 
