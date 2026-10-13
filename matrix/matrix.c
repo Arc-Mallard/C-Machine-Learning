@@ -98,21 +98,21 @@ void print(Matrix m) {
 
 unsigned char* serialize(Matrix m) {
 	unsigned char* bytes = malloc(3 * sizeof(int) + m.n * sizeof(float));
-	if (!bytes || !m.d) {perror("serialize"); return bytes;}
-	memcpy(bytes, &m.w, sizeof(m.w));
-	memcpy(bytes + 1 * sizeof(int), &m.w, sizeof(m.w));
-	memcpy(bytes + 2 * sizeof(int), &m.h, sizeof(m.w));
+	//if (!bytes || !m.d) {perror("serialize"); return bytes;}
+	memcpy(bytes, &m.w, sizeof(int));
+	memcpy(bytes + 1 * sizeof(int), &m.h, sizeof(int));
+	memcpy(bytes + 2 * sizeof(int), &m.n, sizeof(int));
 	memcpy(bytes + 3 * sizeof(int), m.d, m.n * sizeof(float));
 	return bytes;
 }
 
 Matrix deserialize(unsigned char* m) {
 	Matrix d = {0};
-	memcpy(&d.w, m, sizeof(d.w));
-	memcpy(&d.h, m + 1 * sizeof(int), sizeof(d.h));
-	memcpy(&d.n, m + 2 * sizeof(int), sizeof(d.n));
+	memcpy(&d.w, m, sizeof(int));
+	memcpy(&d.h, m + 1 * sizeof(int), sizeof(int));
+	memcpy(&d.n, m + 2 * sizeof(int), sizeof(int));
 	d.d = malloc(d.n * sizeof(float));
-	if (!d.d) {perror("deserialize"); return d;}
+	//if (!d.d) {perror("deserialize"); return d;}
 	memcpy(d.d, m + 3 * sizeof(int), d.n * sizeof(float));
 	return d;
 }
