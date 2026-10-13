@@ -1,9 +1,9 @@
 #include "../matrix/matrix.h"
 
 typedef struct {
-	int size[]; Matrix weights[];
+	int* size; Matrix* weights;
 	// These matrices are actually all vectors
-	Matrix biases[], activations[], preactivations[];
+	Matrix* biases, activations, preactivations;
 } Network;
 
 // ALL matrices below should be treated as vectors
