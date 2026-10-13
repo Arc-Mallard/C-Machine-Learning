@@ -53,7 +53,7 @@ Matrix transpose(Matrix m) {
 
 Matrix scale(Matrix m, float s) {
     Matrix res = {0};
-    res.h = m.h
+    res.h = m.h;
     res.w = m.w;
     res.n = res.h * res.w;
     res.d = malloc(res.n * sizeof(float));
