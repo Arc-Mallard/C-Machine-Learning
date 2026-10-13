@@ -90,7 +90,7 @@ void print(Matrix m) {
     for (int i = 0; i < m.h; i++) {
         printf("[ ");
         for (int j = 0; j < m.w; j++) {
-            printf("%f ", m.d[i * m.w + j]);
+            printf("%.2f ", m.d[i * m.w + j]);
         }
         printf("]\n");
     }
