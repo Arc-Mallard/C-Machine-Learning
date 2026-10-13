@@ -96,7 +96,7 @@ void print(Matrix m) {
     }
 }
 
-unsigned char* serialize(Matrix m) {
+unsigned char* serializeMatrix(Matrix m) {
 	unsigned char* bytes = malloc(3 * sizeof(int) + m.n * sizeof(float));
 	if (!bytes || !m.d) {perror("serialize"); return bytes;}
 	memcpy(bytes, &m.w, sizeof(int));
@@ -106,7 +106,7 @@ unsigned char* serialize(Matrix m) {
 	return bytes;
 }
 
-Matrix deserialize(unsigned char* m) {
+Matrix deserializeMatrix(unsigned char* m) {
 	Matrix d = {0};
 	memcpy(&d.w, m, sizeof(int));
 	memcpy(&d.h, m + 1 * sizeof(int), sizeof(int));

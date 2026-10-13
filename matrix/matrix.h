@@ -19,6 +19,6 @@ Matrix add(Matrix m, float a);
 
 void print(Matrix m);
 
-unsigned char* serialize(Matrix m);
+unsigned char* serializeMatrix(Matrix m);
 
-Matrix deserialize(unsigned char* m);
+Matrix deserializeMatrix(unsigned char* m);
