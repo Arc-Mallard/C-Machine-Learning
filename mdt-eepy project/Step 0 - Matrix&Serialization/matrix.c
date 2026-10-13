@@ -100,12 +100,10 @@ unsigned char* serialize(Matrix m) {
 	if (!m.d) {return NULL;}
 	unsigned char* bytes = malloc(3 * sizeof(int) + m.n * sizeof(float));
 	if (!bytes) {return NULL;}
-
 	memcpy(bytes, &m.w, sizeof(m.w));
 	memcpy(bytes + 1 * sizeof(int), &m.w, sizeof(m.w));
 	memcpy(bytes + 2 * sizeof(int), &m.h, sizeof(m.w));
 	memcpy(bytes + 3 * sizeof(int), m.d, m.n * sizeof(float));
-
 	return bytes;
 }
 
