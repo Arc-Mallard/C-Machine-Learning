@@ -3,7 +3,7 @@
 typedef struct {
 	int* size; Matrix* weights;
 	// These matrices are actually all vectors
-	Matrix* biases, activations, preactivations;
+	Matrix* biases; Matrix* activations; Matrix* preactivations;
 } Network;
 
 // ALL matrices below should be treated as vectors
