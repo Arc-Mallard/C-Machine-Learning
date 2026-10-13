@@ -41,9 +41,9 @@ Matrix transpose(Matrix m) {
 		m.h, m.w, m.n,
 		malloc(m.n * sizeof(float))
 	};
-	for (int i = 0;  i < m.w; i++) {
-		for (int j = 0; j < m.h; j++) {
-			t.d[j * m.w + i] = m.d[i * m.w + j];
+	for (int i = 0;  i < m.h; i++) {
+		for (int j = 0; j < m.w; j++) {
+			t.d[j * t.w + i] = m.d[i * m.w + j];
 		}
 	} return t;
 }
