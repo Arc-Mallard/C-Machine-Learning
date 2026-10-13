@@ -9,6 +9,6 @@ $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@
 
 clean:
-	rm -f $(OBJS) $(DEPS) $(TARGET)
+	rm -f $(OBJS) $(TARGET)
 
 .PHONY: clean
