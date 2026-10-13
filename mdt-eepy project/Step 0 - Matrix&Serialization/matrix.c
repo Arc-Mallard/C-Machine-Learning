@@ -6,13 +6,30 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
-	if (!m1 || !m2 || m1 -> n != m2 -> n) {return NULL;}
+	if (!m1 || !m2 || m1 -> n != m2 -> n) {perror("elementwise");}
 	Matrix e = {m1 -> w, m1 -> h, m1 -> n, malloc(m1 -> n * sizeof(float))};
 	for (int i = 0; i < m1 -> n; i++) {e -> d[i] = m1 -> d[i] * m2 -> d[i];}
 	return e;
 }
 
 Matrix transpose(Matrix m) {
+	if (!m) {perror("transpose");}
+	Matrix t = {
+		m -> w, m -> h, m -> n,
+		malloc(m -> n * sizeof(float))
+	};
+	for (int i = 0;  i < m -> w; i++) {
+		for (int j = 0; j < m -> h; j++) {
+
+
+//			[0, 0, 1, 1, 2, 2]
+
+//			|0, 0|
+//			|1, 1|  ->	|0  1, 2|
+//			|2, 2|		|0, 1, 2|
+
+		}
+	}
 	return NULL;
 }
 
@@ -22,6 +39,10 @@ Matrix scale(Matrix m, float s) {
 
 Matrix add(Matrix m, float a) {
 	return NULL;
+}
+
+void print(Matrix m) {
+
 }
 
 unsigned char* serialize(Matrix m, FILE* f) {

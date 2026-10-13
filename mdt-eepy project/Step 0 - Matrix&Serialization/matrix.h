@@ -15,6 +15,8 @@ Matrix scale(Matrix m, float s);
 
 Matrix add(Matrix m, float a);
 
+void print(Matrix m);
+
 unsigned char* serialize(Matrix m, FILE* f);
 
 Matrix deserialize(unsigned char* m);
