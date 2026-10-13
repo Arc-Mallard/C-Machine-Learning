@@ -35,20 +35,11 @@ Matrix transpose(Matrix m) {
 	Matrix t = {
 		m -> h, m -> w, m -> n,
 		malloc(m -> n * sizeof(float))
-	};
-	for (int i = 0;  i < m -> w; i++) {
+	}; for (int i = 0;  i < m -> w; i++) {
 		for (int j = 0; j < m -> h; j++) {
-			t -> d[j * m -> h + i] = m -> d[j];
-
-//			[0, 0, 1, 1, 2, 2]
-
-//			|0, 0|
-//			|1, 1|  ->	|0  1, 2|
-//			|2, 2|		|0, 1, 2|
-
+			t -> d[j * m -> w + i] = m -> d[i * m -> w + j];
 		}
-	}
-	return NULL;
+	} return t;
 }
 
 Matrix scale(Matrix m, float s) {
