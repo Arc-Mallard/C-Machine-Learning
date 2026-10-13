@@ -11,21 +11,21 @@ int main() {
 
 	float data1[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
 	Matrix test1 = {2, 3, 6, data1};
-	printf("declaring matrix 1");
-	print(test1); printf("/n");
+	printf("declaring matrix 1 \n");
+	print(test1); printf("\n");
 
 	float data2[] = {7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
 	Matrix test2 = {2, 3, 6, data2};
-	printf("declaring matrix 2");
-	print(test2); printf("/n");
+	printf("declaring matrix 2 \n");
+	print(test2); printf("\n");
 
 	Matrix test3 = multiply(test1, test1);
-	printf("multiplying matrix 1 with matrix 2");
-	print(test3); printf("/n");
+	printf("multiplying matrix 1 with matrix 2 \n");
+	print(test3); printf("\n");
 
 	Matrix test4 = transpose(test3);
-	printf("transposing multiplied matrix");
-	print(test4); printf("/n");
+	printf("transposing multiplied matrix \n");
+	print(test4); printf("\n");
 
 	printf("Hello World!");
 }
