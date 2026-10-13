@@ -23,4 +23,4 @@ unsigned char* serialize(Matrix m);
 
 Matrix deserialize(unsigned char* m);
 
-unsigned int size(Matrix m);
+size_t size(Matrix m);
