@@ -1,21 +1,21 @@
 #include "matrix.h"
 
 Matrix multiply(Matrix m1, Matrix m2) {
-    Matrix res;
-    int rows = m1.h;
-    int cols = m2.w;
-    int n = rows * cols;
-    float d[n] = {0};
+    Matrix res = {0};
 
-    res.h = rows;
-    res.w = cols;
-    res.n = n;
-    res.d = d;
+    if (m1.w != m2.h) {
+        return res;
+    }
 
-    for (int i = 0; i < m1.w; i++) {
-        for (int j = 0; j < m1.h; j++) {
-            for (int k = 0; m2.w; k++) {
-                res.d[j * m2.w + k] += m1.d[i + k * m1.h] * m2.d[k + j * m2.h];
+    res.h = m1.h;
+    res.w = m2.w;
+    res.n = res.h * res.w;
+    res.d = calloc(res.n, sizeof(float));
+
+    for (int i = 0; i < m1.h; i++) {
+        for (int j = 0; j < m2.w; j++) {
+            for (int k = 0; m1.w; k++) {
+                res.d[i * res.w + j] += m1.d[i * m1.w + k] * m2.d[k * m2.w + j];
             }
         }
     }
