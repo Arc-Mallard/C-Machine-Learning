@@ -19,7 +19,7 @@ Matrix multiply(Matrix m1, Matrix m2) {
 
     for (int i = 0; i < m1.h; i++) {
         for (int j = 0; j < m2.w; j++) {
-            for (int k = 0; m1.w; k++) {
+            for (int k = 0; k < m1.w; k++) {
                 res.d[i * res.w + j] += m1.d[i * m1.w + k] * m2.d[k * m2.w + j];
             }
         }
