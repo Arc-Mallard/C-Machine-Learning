@@ -24,14 +24,14 @@ Matrix multiply(Matrix m1, Matrix m2) {
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
-	if (!m1 || !m2 || m1 -> n != m2 -> n) {perror("elementwise");}
+	if (!m1 || !m2 || m1 -> n != m2 -> n) {return NULL;}
 	Matrix e = {m1 -> w, m1 -> h, m1 -> n, malloc(m1 -> n * sizeof(float))};
 	for (int i = 0; i < m1 -> n; i++) {e -> d[i] = m1 -> d[i] * m2 -> d[i];}
 	return e;
 }
 
 Matrix transpose(Matrix m) {
-	if (!m) {perror("transpose");}
+	if (!m) {return NULL;}
 	Matrix t = {
 		m -> h, m -> w, m -> n,
 		malloc(m -> n * sizeof(float))
@@ -81,10 +81,11 @@ void print(Matrix m) {
     }
 }
 
-unsigned char* serialize(Matrix m, char* f) {
-	FILE* file = fopen(f);
-	fwrite(m -> d, sizeof(float), m -> n, file);
-	return NULL;
+unsigned char* serialize(Matrix m) {
+	if (!m) {return NULL;}
+	char bytes[sizeof(m)];
+	memcpy(bytes, &m, sizeof(m));
+	return bytes;
 }
 
 Matrix deserialize(unsigned char* m) {

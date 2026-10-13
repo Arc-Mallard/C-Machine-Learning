@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
 	int w, h, n;
@@ -18,6 +19,6 @@ Matrix add(Matrix m, float a);
 
 void print(Matrix m);
 
-unsigned char* serialize(Matrix m, char* f);
+unsigned char* serialize(Matrix m);
 
 Matrix deserialize(unsigned char* m);
