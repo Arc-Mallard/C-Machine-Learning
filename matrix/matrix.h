@@ -22,5 +22,3 @@ void print(Matrix m);
 unsigned char* serialize(Matrix m);
 
 Matrix deserialize(unsigned char* m);
-
-size_t size(Matrix m);
