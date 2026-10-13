@@ -1,8 +1,26 @@
 #include "matrix.h"
 
 Matrix multiply(Matrix m1, Matrix m2) {
-    printf("multiply");
-	return NULL;
+    Matrix res;
+    int rows = m1.h;
+    int cols = m2.w;
+    int n = rows * cols;
+    float d[n] = {0};
+
+    res.h = rows;
+    res.w = cols;
+    res.n = n;
+    res.d = d;
+
+    for (int i = 0; i < m1.w; i++) {
+        for (int j = 0; j < m1.h; j++) {
+            for (int k = 0; m2.w; k++) {
+                res.d[j * m2.w + k] += m1.d[i + k * m1.h] * m2.d[k + j * m2.h];
+            }
+        }
+    }
+
+	return res;
 }
 
 Matrix elementwise(Matrix m1, Matrix m2) {
@@ -34,7 +52,17 @@ Matrix transpose(Matrix m) {
 }
 
 Matrix scale(Matrix m, float s) {
-	return NULL;
+    Matrix res = {0};
+    res.h = m.h
+    res.w = m.w;
+    res.n = res.h * res.w;
+    res.d = malloc(res.n * sizeof(float));
+
+    for (int i = 0; i < res.n; i++) {
+        res.d[i] = m.d[i] * s;
+    }
+
+	return res;
 }
 
 Matrix add(Matrix m, float a) {
