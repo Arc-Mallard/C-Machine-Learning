@@ -3,4 +3,4 @@
 
 float costCalculate(Matrix output, Matrix target);
 
-float costDerivitive(Matrix output, Matrix target);
+Matrix costDerivitive(Matrix output, Matrix target);
