@@ -10,7 +10,7 @@ Matrix predict(Matrix input) {
 }
 
 unsigned char* serializeNetwork(Network n) {
-	unsigned char weights[];
+	unsigned char weights[0];
 	return weights;
 }
 
