@@ -83,7 +83,7 @@ void print(Matrix m) {
 
 unsigned char* serialize(Matrix m, char* f) {
 	FILE* file = fopen(f);
-	fwrite(file);
+	fwrite(m -> d, sizeof(float), m -> n, file);
 	return NULL;
 }
 
