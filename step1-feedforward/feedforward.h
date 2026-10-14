@@ -7,6 +7,7 @@ typedef struct {
 } Network;
 
 // ALL matrices below should be treated as vectors
+Network init(Network net);
 
 Matrix forward(Matrix input);
 

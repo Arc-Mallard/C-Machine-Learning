@@ -1,6 +1,10 @@
 // ALL matrices below should be treated as vectors
 #include "feedforward.h"
 
+Network init(Network net) {
+	return (Network) {0};
+}
+
 Matrix forward(Matrix input) {
 	return (Matrix) {0};
 }
@@ -18,8 +22,8 @@ Matrix predict(Network net, Matrix input) {
 }
 
 unsigned char* serializeNetwork(Network n) {
-	unsigned char weights[0];
-	return weights;
+	unsigned char temp[0];
+	return temp;
 }
 
 Network deserializeNetwork(unsigned char* m) {
