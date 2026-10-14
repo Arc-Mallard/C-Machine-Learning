@@ -22,7 +22,7 @@ Matrix predict(Network net, Matrix input) {
 }
 
 unsigned char* serializeNetwork(Network n) {
-	unsigned char temp[0];
+	unsigned char* temp;
 	return temp;
 }
 
