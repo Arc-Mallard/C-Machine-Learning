@@ -1,7 +1,7 @@
 // ALL matrices below should be treated as vectors
 #include "feedforward.h"
 
-Network init(Network net) {
+Network init(int size[]) {
 	return (Network) {0};
 }
 
