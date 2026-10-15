@@ -2,7 +2,7 @@
 
 #include "cost.h"
 
-// ALL matricies in this file should be treated as vectors
+// ALL matrices in this file should be treated as vectors
 
 float cstFunction(Matrix output, Matrix target) {
 	return 0;

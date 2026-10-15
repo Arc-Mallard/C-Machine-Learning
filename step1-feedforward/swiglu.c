@@ -1,4 +1,3 @@
-// https://chsafouane.github.io/posts/why-swiglu-works/index.html
 #include "../matrix/matrix.h"
 #include <math.h>
 
