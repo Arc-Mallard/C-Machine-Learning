@@ -12,10 +12,10 @@ Matrix multiply(Matrix m1, Matrix m2) {
     res.n = res.h * res.w;
     res.d = calloc(res.n, sizeof(float));
 
-    if (res.d == NULL) {
-        perror("calloc");
-        return res;
-    }
+//    if (res.d == NULL) {
+//        perror("calloc");
+//        return res;
+//    }
 
     for (int i = 0; i < m1.h; i++) {
         for (int j = 0; j < m2.w; j++) {
@@ -55,10 +55,10 @@ Matrix scale(Matrix m, float s) {
     res.n = res.h * res.w;
     res.d = malloc(res.n * sizeof(float));
 
-    if (res.d == NULL) {
-        perror("malloc");
-        return res;
-    }
+//    if (res.d == NULL) {
+//        perror("malloc");
+//        return res;
+//    }
 
     for (int i = 0; i < res.n; i++) {
         res.d[i] = m.d[i] * s;
@@ -74,16 +74,22 @@ Matrix add(Matrix m, float a) {
     res.n = res.h * res.w;
     res.d = malloc(res.n * sizeof(float));
 
-    if (res.d == NULL) {
-        perror("malloc");
-        return res;
-    }
+//    if (res.d == NULL) {
+//        perror("malloc");
+//        return res;
+//    }
 
     for (int i = 0; i < res.n; i++) {
         res.d[i] = m.d[i] + a;
     }
 
     return res;
+}
+
+Matrix addMatrix(Matrix m1, Matrix m2) {
+	Matrix a = {m1.w, m1.h, m1.n, malloc(m1.n * sizeof(float))};
+	for (int i = 0; i < m1.n; i++) {a.d[i] = m1.d[i] + m2.d[i];}
+	return a;
 }
 
 void print(Matrix m) {
