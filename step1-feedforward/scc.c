@@ -5,7 +5,28 @@
 // ALL matrices in this file should be treated as vectors
 
 float cstFunction(Matrix output, Matrix target) {
-	return 0;
+    int samples = target.n;
+    int classes = output.n / target.n;
+    double total = 0.0;
+
+    for (int i = 0; i < samples; i++) {
+        int label = (int)target.d[i];
+
+        if (label < 0 || label >= classes) {
+            continue;
+        }
+
+        double p = output.d[i * classes + label];
+
+        if (p < EPSILON)
+            p = EPSILON;
+        if (p > 1.0 - EPSILON)
+            p = 1.0 - EPSILON;
+
+        total += -log(p);
+    }
+
+    return (float)(total / samples);
 }
 
 Matrix cstDerivitive(Matrix output, Matrix target) {
