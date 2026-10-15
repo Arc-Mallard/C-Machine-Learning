@@ -5,7 +5,8 @@
  *      Author: nicol
  */
 
-#include "matrix/matrix.h"
+//#include "matrix/matrix.h"
+#include "step1-feedforward/initializer.h"
 
 int main() {
 
@@ -29,6 +30,25 @@ int main() {
 
 	printf("serializing transposed matrix \n");
 	print(deserializeMatrix(serializeMatrix(test4)));
+	printf("\n");
+
+	printf("gaussian noise\n");
+	int low = 0, high = 0, mid = 0;
+	for (int i = 0; i < 1000; i++) {
+	    float value = gaussianNoise(0, .5);
+		if (value > 0.5)
+		    high++;
+		else if (value < -0.5)
+		    low++;
+		else
+		    mid++;
+		//printf("%f\n", value);
+	}
+	printf("low: %d, mid: %d, high: %d\n\n", low, mid, high);
+
+	printf("initialize weights\n");
+	Matrix test5 = initialize(3, 3, 9, 0.0, 1.0);
+	print(test5);
 	printf("\n");
 
 	printf("Hello World!\n");
