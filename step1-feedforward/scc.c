@@ -12,9 +12,8 @@ float cstFunction(Matrix output, Matrix target) {
     for (int i = 0; i < samples; i++) {
         int label = (int)target.d[i];
 
-        if (label < 0 || label >= classes) {
+        if (label < 0 || label >= classes)
             continue;
-        }
 
         double p = output.d[i * classes + label];
 
