@@ -1,4 +1,5 @@
 #include "../matrix/matrix.h"
+#include <math.h>
 
 Matrix updateWeights(Matrix weights, Matrix gradient);
 

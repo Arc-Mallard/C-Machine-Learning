@@ -2,11 +2,22 @@
 
 #include "optimizer.h"
 
-Matrix updateWeights(Matrix weights, Matrix gradient) {
-	return (Matrix) {0};
+#define EPSILON 10e-6f
+
+typedef struct {
+	float learningRate; float wghtDecay;
+	float frstDecay; float scndDecay; int step;
+} AdamState;
+
+AdamState adamInit(float learningRate, float weightDecay) {
+	AdamState a = {learningRate, weightDecay, 0.9, 0.999, 0}; return a;
 }
 
-// Treat the matrices below as vectors
-Matrix updateBiases(Matrix biases, Matrix delta) {
-	return (Matrix) {0};
+Network adamwOptimize(AdamState* state, Matrix* frstMoment, Matrix* scndMoment, Network net) {
+	return net;
 }
+
+
+
+
+
