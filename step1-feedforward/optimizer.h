@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-#define EPSILON 10e-6f
+#define EPSILON 10e-7f
 
 typedef struct {
 	float learningRate; float wghtDecay;
