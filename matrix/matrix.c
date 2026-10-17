@@ -1,5 +1,19 @@
 #include "matrix.h"
 
+Matrix initEmptyMatrix(int w, int h) {
+	int n = w * h; return (Matrix) {w, h, n, malloc(n *sizeof(float))};
+}
+
+Network initEmptyNet(int layers, int* size) {
+	int layersAdjust = layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
+	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(layers * sizeof(Matrix));
+	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = initEmptyMatrix(1, size[0]);
+	for (int i = 1; i < layers; i++) {
+		wghts[i-1] = initEmptyMatrix(size[i-1], size[i]); biases[i-1] = initEmptyMatrix(1, size[i]);
+		activations[i] = initEmptyMatrix(1, size[i]); preactivations[i-1] = initEmptyMatrix(1, size[i]);
+	} return (Network) {layers, size, wghts, biases, activations, preactivations};
+}
+
 Matrix multiply(Matrix m1, Matrix m2) {
     Matrix res = {0};
 

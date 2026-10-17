@@ -24,11 +24,11 @@ void adamFree(AdamState* state, Network net) {
 }
 
 Network adamwOptimize(AdamState* state, Network net, Matrix gradient[]) {
-	Network n = (Network) {net.layers, net.size, net.weights};
-	state -> params.step++;
+	Network n = initEmptyNet(net.layers, net.size); state -> params.step++;
+	n.activations = net.activations; n.preactivations = net.preactivations;
 
 	float frstBias, scndBias;
-	for (int i = 0; i < net.layers; i++) {
+	for (int i = 0; i < net.layers - 1; i++) {
 		for (int j = 0; j < state -> frstMomentWght[i].n; j++) {
 			// m1 = b1 * m0 + (1 - b1) * g1
 			state -> frstMomentWght[i].d[j] = state -> params.frstDecay * state -> frstMomentWght[i].d[j] + (1 - state -> params.frstDecay) * gradient[i].d[j];
@@ -39,10 +39,11 @@ Network adamwOptimize(AdamState* state, Network net, Matrix gradient[]) {
 			// vhat1 = v1 / (1 - b2^t);
 			scndBias = state -> scndMomentWght[i].d[j] / (1 - powf(state -> params.scndDecay, state -> params.step));
 			// theta1 = theta0 - alpha X mhat1 / (sqrt(vhat1) + epsilon)
+			n.weights[i].d[j] = net.weights[i].d[j] - state -> params.learningRate * frstBias / (sqrtf(scndBias) + EPSILON);
 		}
 	}
 
-	return net;
+	return n;
 }
 
 void stateAssign(Matrix* s, Matrix m) {

@@ -13,6 +13,10 @@ typedef struct {
 	Matrix* biases; Matrix* activations; Matrix* preactivations;
 } Network;
 
+Matrix initEmptyMatrix(int w, int h);
+
+Network initEmptyNet(int layers, int* size);
+
 Matrix multiply(Matrix m1, Matrix m2);
 
 Matrix elementwise(Matrix m1, Matrix m2);
