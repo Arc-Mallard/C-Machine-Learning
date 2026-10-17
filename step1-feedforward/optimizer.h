@@ -1,5 +1,6 @@
 #include "../matrix/matrix.h"
 #include <math.h>
+#include <stdbool.h>
 
 #define EPSILON 10e-6f
 
@@ -20,4 +21,6 @@ AdamState adamInit(Network net, float learningRate, float weightDecay);
 
 void adamFree(AdamState* state, Network net);
 
-Network adamwOptimize(AdamState* state, Network net, Matrix gradient[]);
+void adamwStep(AdamParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w2, float frstPowf, float scndPowf, int w);
+
+Network adamwOptimize(AdamState* state, Network net, Matrix wghtGrad[], Matrix biasGrad[]);

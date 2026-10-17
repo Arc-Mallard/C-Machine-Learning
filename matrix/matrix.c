@@ -14,6 +14,10 @@ Network initEmptyNet(int layers, int* size) {
 	} return (Network) {layers, size, wghts, biases, activations, preactivations};
 }
 
+void freeMatrixArr(Matrix* m, int len) {
+	for (int i = 0; i < len; i++) {free(m[i].d);} free (m);
+}
+
 Matrix multiply(Matrix m1, Matrix m2) {
     Matrix res = {0};
 

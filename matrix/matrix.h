@@ -17,6 +17,8 @@ Matrix initEmptyMatrix(int w, int h);
 
 Network initEmptyNet(int layers, int* size);
 
+void freeMatrixArr(Matrix* m, int len);
+
 Matrix multiply(Matrix m1, Matrix m2);
 
 Matrix elementwise(Matrix m1, Matrix m2);
