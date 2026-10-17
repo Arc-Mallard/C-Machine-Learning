@@ -7,6 +7,12 @@ typedef struct {
 	float* d;
 } Matrix;
 
+typedef struct {
+	int layers; int* size; Matrix* weights;
+	// These matrices are actually all vectors
+	Matrix* biases; Matrix* activations; Matrix* preactivations;
+} Network;
+
 Matrix multiply(Matrix m1, Matrix m2);
 
 Matrix elementwise(Matrix m1, Matrix m2);

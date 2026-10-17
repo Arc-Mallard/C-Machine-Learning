@@ -1,11 +1,5 @@
 #include "../matrix/matrix.h"
 
-typedef struct {
-	int* size; Matrix* weights;
-	// These matrices are actually all vectors
-	Matrix* biases; Matrix* activations; Matrix* preactivations;
-} Network;
-
 // ALL matrices below should be treated as vectors
 Network init(int size[]);
 
