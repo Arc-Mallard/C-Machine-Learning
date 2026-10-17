@@ -38,8 +38,8 @@ Network adamwOptimize(AdamState* state, Network net, Matrix gradient[]) {
 			frstBias = state -> frstMomentWght[i].d[j] / (1 - powf(state -> params.frstDecay, state -> params.step));
 			// vhat1 = v1 / (1 - b2^t);
 			scndBias = state -> scndMomentWght[i].d[j] / (1 - powf(state -> params.scndDecay, state -> params.step));
-			// theta1 = theta0 - alpha X mhat1 / (sqrt(vhat1) + epsilon)
-			n.weights[i].d[j] = net.weights[i].d[j] - state -> params.learningRate * frstBias / (sqrtf(scndBias) + EPSILON);
+			// theta1 = theta0 - alpha X mhat1 / (sqrt(vhat1) + epsilon) - alpha * lambda *  theta0
+			n.weights[i].d[j] = net.weights[i].d[j] - state -> params.learningRate * frstBias / (sqrtf(scndBias) + EPSILON) - state -> params.learningRate * state -> params.wghtDecay * net.weights[i].d[j];
 		}
 	}
 

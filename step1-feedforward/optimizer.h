@@ -20,4 +20,4 @@ AdamState adamInit(Network net, float learningRate, float weightDecay);
 
 void adamFree(AdamState* state, Network net);
 
-Network adamwOptimize(AdamState* state, Network net, Matrix gradient);
+Network adamwOptimize(AdamState* state, Network net, Matrix gradient[]);
