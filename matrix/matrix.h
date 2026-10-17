@@ -9,7 +9,7 @@ typedef struct {
 
 typedef struct {
 	int layers; int* size; Matrix* weights;
-	// These matrices are actually all vectors
+	// These matrices below are actually all vectors
 	Matrix* biases; Matrix* activations; Matrix* preactivations;
 } Network;
 

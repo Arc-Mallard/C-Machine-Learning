@@ -2,19 +2,6 @@
 
 #include "optimizer.h"
 
-#define EPSILON 10e-6f
-
-typedef struct {
-	float learningRate; float wghtDecay;
-	float frstDecay; float scndDecay; int step;
-} AdamParams;
-
-typedef struct {
-	AdamParams params;
-	Matrix* frstMomentWght; Matrix* scndMomentWght;
-	Matrix* frstMomentBias; Matrix* scndMomentBias;
-} AdamState;
-
 AdamState adamInit(Network net, float learningRate, float weightDecay) {
 	AdamState s = {
 		(AdamParams) {learningRate, weightDecay, 0.9, 0.999, 0},
@@ -22,23 +9,8 @@ AdamState adamInit(Network net, float learningRate, float weightDecay) {
 		malloc(sizeof(Matrix) * net.layers), malloc(sizeof(Matrix) * net.layers)
 	};  // Who needs error handling anyways?
 	for (int i = 0; i < net.layers; i++) {
-		// Initialize the moment for the network weights
-		s.frstMomentWght[i].w = net.weights[i].w; s.scndMomentWght[i].w = net.weights[i].w;
-		s.frstMomentWght[i].h = net.weights[i].h; s.scndMomentWght[i].h = net.weights[i].h;
-		s.frstMomentWght[i].n = net.weights[i].n; s.scndMomentWght[i].n = net.weights[i].n;
-		// Initialize the moment for the network biases
-		s.frstMomentBias[i].w = net.biases[i].w; s.scndMomentBias[i].w = net.biases[i].w;
-		s.frstMomentBias[i].h = net.biases[i].h; s.scndMomentBias[i].h = net.biases[i].h;
-		s.frstMomentBias[i].n = net.biases[i].n; s.scndMomentBias[i].n = net.biases[i].n;
-		// Allocate memory for the moment of the network weights
-		s.frstMomentWght[i].d = malloc(sizeof(float)*net.weights[i].n);
-		s.scndMomentWght[i].d = malloc(sizeof(float)*net.weights[i].n);
-		// Allocate memory for the moment of the network biases
-		s.frstMomentBias[i].d = malloc(sizeof(float)*net.biases[i].n);
-		s.scndMomentBias[i].d = malloc(sizeof(float)*net.biases[i].n);
-		// Set garbage memory to 0 for weights and biases
-		for (int j = 0; j < net.weights[i].n; j++) {s.frstMomentWght[i].d[j] = 0.0; s.scndMomentWght[i].d[j] = 0.0;}
-		for (int j = 0; j < net.biases[i].n; j++) {s.frstMomentBias[i].d[j] = 0.0; s.scndMomentBias[i].d[j] = 0.0;}
+		stateAssign(&s.frstMomentWght[i], net.weights[i]); stateAssign(&s.scndMomentWght[i], net.weights[i]);
+		stateAssign(&s.frstMomentBias[i], net.biases[i]); stateAssign(&s.scndMomentBias[i], net.biases[i]);
 	} return s;
 }
 
@@ -51,15 +23,28 @@ void adamFree(AdamState* state, Network net) {
 	free(state -> frstMomentBias); free(state -> scndMomentBias);
 }
 
-Network adamwOptimize(AdamState* state, Network net, Matrix gradient) {
+Network adamwOptimize(AdamState* state, Network net, Matrix gradient[]) {
+	Network n = (Network) {net.layers, net.size, net.weights};
 	state -> params.step++;
 
-
+	float frstBias, scndBias;
+	for (int i = 0; i < net.layers; i++) {
+		for (int j = 0; j < state -> frstMomentWght[i].n; j++) {
+			// m1 = b1 * m0 + (1 - b1) * g1
+			state -> frstMomentWght[i].d[j] = state -> params.frstDecay * state -> frstMomentWght[i].d[j] + (1 - state -> params.frstDecay) * gradient[i].d[j];
+			// v1 = b2 * v0 + (1 - b2) * g1^2
+			state -> scndMomentWght[i].d[j] = state -> params.scndDecay * state -> scndMomentWght[i].d[j] + (1 - state -> params.scndDecay) * gradient[i].d[j] * gradient[i].d[j];
+			// mhat1 = m1 / (1 - b1^t);
+			frstBias = state -> frstMomentWght[i].d[j] / (1 - powf(state -> params.frstDecay, state -> params.step));
+			// vhat1 = v1 / (1 - b2^t);
+			scndBias = state -> scndMomentWght[i].d[j] / (1 - powf(state -> params.scndDecay, state -> params.step));
+			// theta1 = theta0 - alpha X mhat1 / (sqrt(vhat1) + epsilon)
+		}
+	}
 
 	return net;
 }
 
-
-
-
-
+void stateAssign(Matrix* s, Matrix m) {
+	*s = (Matrix) {m.w, m.h, m.n, (float*) calloc(m.n, sizeof(float))};
+}
