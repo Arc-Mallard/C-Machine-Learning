@@ -1,4 +1,4 @@
-// https://adelbennaceur.github.io/posts/adam_vs_adamw/
+// heavily "inspired" by https://github.com/loretoparisi/adamw.c/blob/main/adamw.c
 
 #include "optimizer.h"
 
@@ -20,7 +20,7 @@ AdamState adamInit(Network net, float learningRate, float weightDecay) {
 		(AdamParams) {learningRate, weightDecay, 0.9, 0.999, 0},
 		malloc(sizeof(Matrix) * net.layers), malloc(sizeof(Matrix) * net.layers),
 		malloc(sizeof(Matrix) * net.layers), malloc(sizeof(Matrix) * net.layers)
-	};
+	};  // Who needs error handling anyways?
 	for (int i = 0; i < net.layers; i++) {
 		// Initialize the moment for the network weights
 		s.frstMomentWght[i].w = net.weights[i].w; s.scndMomentWght[i].w = net.weights[i].w;
@@ -51,7 +51,11 @@ void adamFree(AdamState* state, Network net) {
 	free(state -> frstMomentBias); free(state -> scndMomentBias);
 }
 
-Network adamwOptimize(AdamState* state, Network net) {
+Network adamwOptimize(AdamState* state, Network net, Matrix gradient) {
+	state -> params.step++;
+
+
+
 	return net;
 }
 
