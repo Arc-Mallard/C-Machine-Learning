@@ -7,20 +7,20 @@
 typedef struct {
 	float learningRate; float wghtDecay;
 	float frstDecay; float scndDecay; int step;
-} AdamParams;
+} AdamwParams;
 
 typedef struct {
-	AdamParams params;
+	AdamwParams params;
 	Matrix* frstMomentWght; Matrix* scndMomentWght;
 	Matrix* frstMomentBias; Matrix* scndMomentBias;
-} AdamState;
+} AdamwState;
 
 void stateAssign(Matrix* s, Matrix m);
 
-AdamState adamInit(Network net, float learningRate, float weightDecay);
+AdamwState adamwInit(Network net, float learningRate, float weightDecay);
 
-void adamFree(AdamState* state, Network net);
+void adamwFree(AdamwState* state, Network net);
 
-void adamwStep(AdamParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w2, float frstPowf, float scndPowf, int w);
+void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w2, float frstPowf, float scndPowf, int w);
 
-Network adamwOptimize(AdamState* state, Network net, Matrix wghtGrad[], Matrix biasGrad[]);
+Network adamwOptimize(AdamwState* state, Network net, Matrix wghtGrad[], Matrix biasGrad[]);

@@ -1,9 +1,9 @@
 #include "optimizer.h"
 
-AdamState adamInit(Network net, float learningRate, float weightDecay) {
+AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 	int layersAdjust = net.layers - 1;
-	AdamState s = {
-		(AdamParams) {learningRate, weightDecay, 0.9, 0.999, 0},
+	AdamwState s = {
+		(AdamwParams) {learningRate, weightDecay, 0.9, 0.999, 0},
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust),
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust)
 	};  // Who needs error handling anyways?
@@ -15,7 +15,7 @@ AdamState adamInit(Network net, float learningRate, float weightDecay) {
 
 void stateAssign(Matrix* s, Matrix m) {*s = (Matrix) {m.w, m.h, m.n, (float*) calloc(m.n, sizeof(float))};}
 
-void adamFree(AdamState* state, Network net) {
+void adamwFree(AdamwState* state, Network net) {
 	for (int i = 0; i < net.layers - 1; i++) {
 		free(state -> frstMomentWght[i].d); free(state -> scndMomentWght[i].d);
 		free(state -> frstMomentBias[i].d); free(state -> scndMomentBias[i].d);
@@ -24,7 +24,7 @@ void adamFree(AdamState* state, Network net) {
 	free(state -> frstMomentBias); free(state -> scndMomentBias);
 }
 
-Network adamwOptimize(AdamState* state, Network net, Matrix wghtGrad[], Matrix biasGrad[]) {
+Network adamwOptimize(AdamwState* state, Network net, Matrix wghtGrad[], Matrix biasGrad[]) {
 	Network n = initEmptyNet(net.layers, net.size); state -> params.step++;
 	freeMatrixArr(n.activations, net.layers); freeMatrixArr(n.preactivations, net.layers - 1);
 	n.activations = net.activations; n.preactivations = net.preactivations;
@@ -35,7 +35,7 @@ Network adamwOptimize(AdamState* state, Network net, Matrix wghtGrad[], Matrix b
 	} return n;
 }
 
-void adamwStep(AdamParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w2, float frstPowf, float scndPowf, int w) {
+void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w2, float frstPowf, float scndPowf, int w) {
 	float frstBias, scndBias;
 	for (int i = 0; i < f.n; i++) {
 		// m1 = b1 * m0 + (1 - b1) * g1
