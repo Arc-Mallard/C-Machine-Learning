@@ -29,5 +29,14 @@ float cstFunction(Matrix output, Matrix target) {
 }
 
 Matrix cstDerivitive(Matrix output, Matrix target) {
-	return (Matrix) {0};
+	int k, label, samples = target.n, classes = output.n / target.n;
+	Matrix m = initEmptyMatrix(1, output.n);
+	for (int i = 0; i < samples; i++) {
+		label = (int) target.d[i];
+		for (int j = 0; j < classes; j++) {
+			k = i * classes + j;
+			m.d[k] = j == label? output.d[k] - 1.0 : output.d[k];
+			m.d[k] /= samples;
+		}
+	} return m;
 }
