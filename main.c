@@ -46,10 +46,13 @@ int main() {
 	}
 	printf("low: %d, mid: %d, high: %d\n\n", low, mid, high);
 
-	printf("initialize weights\n");
+	printf("initialize test matrix\n");
 	Matrix test5 = initialize(3, 3, 9, 0.0, 1.0);
 	print(test5);
 	printf("\n");
+
+//	int sizes[] = {2, 3, 3, 1};
+//	Network n = init(sizes);
 
 	printf("Hello World!\n");
 }
