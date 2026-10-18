@@ -1,4 +1,5 @@
 #include "../matrix/matrix.h"
+#include "activations.h"
 
 // ALL matrices below should be treated as vectors
 Network init(int size[]);

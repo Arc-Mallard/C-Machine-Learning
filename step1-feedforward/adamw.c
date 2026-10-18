@@ -3,7 +3,7 @@
 AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 	int layersAdjust = net.layers - 1;
 	AdamwState s = {
-		(AdamwParams) {learningRate, weightDecay, 0.9, 0.999, 0},
+		(AdamwParams) {learningRate, weightDecay, 0.9f, 0.999f, 0.0f},
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust),
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust)
 	};  // Who needs error handling anyways?
@@ -39,9 +39,9 @@ void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w
 	float frstBias, scndBias;
 	for (int i = 0; i < f.n; i++) {
 		// m1 = b1 * m0 + (1 - b1) * g1
-		f.d[i] = p.frstDecay * f.d[i] + (1 - p.frstDecay) * g.d[i];
+		f.d[i] = p.frstDecay * f.d[i] + (1.0f - p.frstDecay) * g.d[i];
 		// v1 = b2 * v0 + (1 - b2) * g1^2
-		s.d[i] = p.scndDecay * s.d[i] + (1 - p.scndDecay) * g.d[i] * g.d[i];
+		s.d[i] = p.scndDecay * s.d[i] + (1.0f - p.scndDecay) * g.d[i] * g.d[i];
 		// mhat1 = m1 / (1 - b1^t);
 		frstBias = f.d[i] / frstPowf;
 		// vhat1 = v1 / (1 - b2^t);

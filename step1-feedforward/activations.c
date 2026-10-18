@@ -5,12 +5,12 @@ float swiglu(float f, float g) {
 }
 
 float sigmoid(float x) {
-	return 1 / (1.0 + expf(-x));
+	return 1 / (1.0f + expf(-x));
 }
 
 float swigluDx(float f, float g) {
 	float s = sigmoid(f);
-	return g * (s + f * s * (1.0 - s));
+	return g * (s + f * s * (1.0f - s));
 }
 
 float swigluDg(float f) {

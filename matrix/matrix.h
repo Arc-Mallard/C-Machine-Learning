@@ -1,3 +1,6 @@
+#ifndef MATRIX_H
+#define MATRIX_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,10 +34,14 @@ Matrix scale(Matrix m, float s);
 
 Matrix add(Matrix m, float a);
 
-void print(Matrix m);
+Matrix addMatrix(Matrix m1, Matrix m2);
 
-Matrix* copyMatrix(Matrix m);
+Matrix copyMatrix(Matrix m);
+
+void print(Matrix m);
 
 unsigned char* serializeMatrix(Matrix m);
 
 Matrix deserializeMatrix(unsigned char* m);
+
+#endif

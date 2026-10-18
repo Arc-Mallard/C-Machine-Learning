@@ -108,6 +108,11 @@ Matrix addMatrix(Matrix m1, Matrix m2) {
 	return a;
 }
 
+Matrix copyMatrix(Matrix m) {
+	Matrix c = {m.w, m.h, m.n, malloc(m.n *sizeof(float))};
+	for (int i = 0; i < m.n; i++) {c.d[i] = m.d[i];} return c;
+}
+
 void print(Matrix m) {
     for (int i = 0; i < m.h; i++) {
         printf("[ ");
@@ -116,11 +121,6 @@ void print(Matrix m) {
         }
         printf("]\n");
     }
-}
-
-Matrix copyMatrix(Matrix m) {
-	Matrix c = {m.w, m.h, m.n, malloc(m.n *sizeof(float))};
-	for (int i = 0; i < m.n; i++) {c.d[i] = m.d[i];} return c;
 }
 
 unsigned char* serializeMatrix(Matrix m) {

@@ -28,7 +28,13 @@ Network train(Network net, Matrix inputs[], Matrix expected[], int epochs) {
 }
 
 Matrix predict(Network net, Matrix input) {
-	return (Matrix) {0};
+	Matrix current = copyMatrix(input);
+	for (int i = 0; i < net.layers; i++) {
+		Matrix product = multiply(net.weights[i], current);
+		Matrix sum = addMatrix(net.biases[i], product);
+		for (int j = 0; j < sum.n; j++) {sum.d[j] = sigmoid(sum.d[j]);}
+		free(product.d); free(current.d); current = sum;
+	} return current;
 }
 
 unsigned char* serializeNetwork(Network n) {

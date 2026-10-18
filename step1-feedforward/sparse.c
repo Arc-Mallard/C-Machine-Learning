@@ -35,7 +35,7 @@ Matrix sccDerivitive(Matrix output, Matrix target) {
 		label = (int) target.d[i];
 		for (int j = 0; j < classes; j++) {
 			k = i * classes + j;
-			m.d[k] = (j == label? output.d[k] - 1.0 : output.d[k]) / samples;
+			m.d[k] = (j == label? output.d[k] - 1.0f : output.d[k]) / samples;
 		}
 	} return m;
 }
