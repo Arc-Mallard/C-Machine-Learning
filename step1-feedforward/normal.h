@@ -3,4 +3,4 @@
 
 float gaussianNoise(float mean, float deviation);
 
-Matrix initialize(int w, int h, int n, float mean, float deviation);
+Matrix initNormal(int w, int h, int n, float mean, float deviation);

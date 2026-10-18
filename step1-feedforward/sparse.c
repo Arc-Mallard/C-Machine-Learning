@@ -1,10 +1,10 @@
 // https://www.geeksforgeeks.org/machine-learning/what-is-sparse-categorical-crossentropy/
 
-#include "cost.h"
+#include "sparce.h"
 
 // ALL matrices in this file should be treated as vectors
 
-float cstFunction(Matrix output, Matrix target) {
+float sccFunction(Matrix output, Matrix target) {
     int samples = target.n;
     int classes = output.n / target.n;
     double total = 0.0;
@@ -28,7 +28,7 @@ float cstFunction(Matrix output, Matrix target) {
     return (float)(total / samples);
 }
 
-Matrix cstDerivitive(Matrix output, Matrix target) {
+Matrix sccDerivitive(Matrix output, Matrix target) {
 	int k, label, samples = target.n, classes = output.n / target.n;
 	Matrix m = initEmptyMatrix(1, output.n);
 	for (int i = 0; i < samples; i++) {

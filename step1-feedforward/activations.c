@@ -1,13 +1,23 @@
-/*
- * softmax.c
- *
- *  Created on: Oct 18, 2026
- *      Author: nicol
- */
+#include "activations.h"
 
-#include "activation.h"
+float swiglu(float f, float g) {
+	return sigmoid(f) * f * g;
+}
 
-Matrix actFunction(Matrix m) {
+float sigmoid(float x) {
+	return 1 / (1.0 + expf(-x));
+}
+
+float swigluDx(float f, float g) {
+	float s = sigmoid(f);
+	return g * (s + f * s * (1.0 - s));
+}
+
+float swigluDg(float f) {
+	return f * sigmoid(f);
+}
+
+Matrix softmax(Matrix m) {
 	float ttl = max(m), sum = 0;
 	Matrix a = initEmptyMatrix(m.w, m.h);
 	for (int i = 0; i < m.n; i++) {

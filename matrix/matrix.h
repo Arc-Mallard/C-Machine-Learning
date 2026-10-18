@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define EPSILON 1e-7f
+
 typedef struct {
 	int w, h, n;
 	float* d;

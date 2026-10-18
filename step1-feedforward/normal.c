@@ -1,4 +1,4 @@
-#include "initializer.h"
+#include "normal.h"
 
 float gaussianNoise(float mean, float deviation) {
     float u1 = ((float)rand() + 1.0) / ((float)RAND_MAX + 2.0);
@@ -9,7 +9,7 @@ float gaussianNoise(float mean, float deviation) {
     return z;
 }
 
-Matrix initialize(int w, int h, int n, float mean, float deviation) {
+Matrix initNormal(int w, int h, int n, float mean, float deviation) {
     Matrix res = {0};
 
     res.w = w;
