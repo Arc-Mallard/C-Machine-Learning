@@ -3,7 +3,7 @@
 // ALL matrices below should be treated as vectors
 Network init(int size[]);
 
-Matrix forward(Matrix input);
+Matrix forward(Network net, Matrix input);
 
 Network backward(Network net, Matrix output, Matrix expected);
 

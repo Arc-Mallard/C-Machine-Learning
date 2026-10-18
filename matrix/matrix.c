@@ -118,6 +118,11 @@ void print(Matrix m) {
     }
 }
 
+Matrix copyMatrix(Matrix m) {
+	Matrix c = {m.w, m.h, m.n, malloc(m.n *sizeof(float))};
+	for (int i = 0; i < m.n; i++) {c.d[i] = m.d[i];} return c;
+}
+
 unsigned char* serializeMatrix(Matrix m) {
 	unsigned char* bytes = malloc(3 * sizeof(int) + m.n * sizeof(float));
 	if (!bytes || !m.d) {perror("serialize"); return bytes;}

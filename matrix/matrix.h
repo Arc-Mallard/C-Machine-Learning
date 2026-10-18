@@ -33,6 +33,8 @@ Matrix add(Matrix m, float a);
 
 void print(Matrix m);
 
+Matrix* copyMatrix(Matrix m);
+
 unsigned char* serializeMatrix(Matrix m);
 
 Matrix deserializeMatrix(unsigned char* m);
