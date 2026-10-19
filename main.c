@@ -5,7 +5,7 @@
  *      Author: nicol
  */
 
-//#include "matrix/matrix.h"
+#include "step1-feedforward/feedforward.h"
 #include "step1-feedforward/normal.h"
 
 int main() {
@@ -51,8 +51,13 @@ int main() {
 	print(test5);
 	printf("\n");
 
-//	int sizes[] = {2, 3, 3, 1};
-//	Network n = init(sizes);
+	printf("initialize neural network and test forward propagation\n");
+	int sizes[] = {2, 3, 3, 1};
+	Network net = init(4, sizes, 0.1f);
+	float vector[] = {1.0, 2.0};
+	Matrix input = {1, 2, 2, vector};
+	Matrix output = forward(net, input);
+	print(output); printf("\n");
 
 	printf("Hello World!\n");
 }

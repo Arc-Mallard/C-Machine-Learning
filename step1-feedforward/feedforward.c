@@ -33,7 +33,7 @@ Network initEmptyNet(int layers, int* size) {
 Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);
-	for (int i = 0; i < net.layers; i++) {
+	for (int i = 0; i < net.layers-1; i++) {
 		Matrix product = multiply(net.weights[i], current);
 		Matrix sum = addMatrix(net.biases[i], product);
 		net.preactivations[i] = copyMatrix(sum);
