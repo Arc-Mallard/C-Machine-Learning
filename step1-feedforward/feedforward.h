@@ -8,7 +8,7 @@ typedef struct {
 } Network;
 
 // ALL matrices below should be treated as vectors
-Network init(int size[]);
+Network init(int layers, int* size, float deviation);
 
 Network initEmptyNet(int layers, int* size);
 

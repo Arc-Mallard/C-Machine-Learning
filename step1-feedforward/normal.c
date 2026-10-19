@@ -9,8 +9,9 @@ float gaussianNoise(float mean, float deviation) {
     return z;
 }
 
-Matrix initNormal(int w, int h, int n, float mean, float deviation) {
+Matrix initNormal(int w, int h, float mean, float deviation) {
     Matrix res = {0};
+    int n = h * w;
 
     res.w = w;
     res.h = h;

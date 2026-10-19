@@ -1,8 +1,23 @@
 // ALL matrices below should be treated as vectors
 #include "feedforward.h"
+#include "normal.h"
 
-Network init(int size[]) {
-	return (Network) {0};
+Network init(int layers, int* size, float deviation) {
+    int layersAdjust = layers - 1;
+    Matrix* wghts = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* biases = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* activations = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* preactivations = calloc(layersAdjust, sizeof(Matrix));
+    activations[0] = initEmptyMatrix(1, size[0]);
+
+    for (int i = 1; i < layers; i++) {
+        wghts[i - 1] = initNormal(size[i - 1], size[i], 0.0, deviation);
+        biases[i - 1] = initEmptyMatrix(1, size[i]);
+        activations[i] = initEmptyMatrix(1, size[i]);
+        preactivations[i - 1] = initEmptyMatrix(1, size[i]);
+    }
+
+	return (Network) {layers, size, wghts, biases, activations, preactivations};
 }
 
 Network initEmptyNet(int layers, int* size) {
