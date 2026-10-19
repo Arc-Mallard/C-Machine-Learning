@@ -47,7 +47,7 @@ int main() {
 	printf("low: %d, mid: %d, high: %d\n\n", low, mid, high);
 
 	printf("initialize test matrix\n");
-	Matrix test5 = initNormal(3, 3, 9, 0.0, 1.0);
+	Matrix test5 = initNormal(3, 3, 0.0, 1.0);
 	print(test5);
 	printf("\n");
 
