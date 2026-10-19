@@ -48,7 +48,7 @@ void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w
 		scndBias = s.d[i] / scndPowf;
 		// theta1 = theta0 - alpha X mhat1 / (sqrt(vhat1) + epsilon)
 		w1 -> d[i] = w2.d[i] - p.learningRate * frstBias / (sqrtf(scndBias) + EPSILON);
-		// theta1 = theta1  - alpha * lambda *  theta0 (if NOT the bias)
+		// theta1 = theta1  - alpha * lambda * theta0 (if NOT the bias)
 		if (w) {w1 -> d[i] = w1 -> d[i] - p.learningRate * p.wghtDecay * w2.d[i];}
 	}
 }
