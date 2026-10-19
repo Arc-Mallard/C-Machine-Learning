@@ -5,6 +5,16 @@ Network init(int size[]) {
 	return (Network) {0};
 }
 
+Network initEmptyNet(int layers, int* size) {
+	int layersAdjust = layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
+	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(layers * sizeof(Matrix));
+	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = initEmptyMatrix(1, size[0]);
+	for (int i = 1; i < layers; i++) {
+		wghts[i-1] = initEmptyMatrix(size[i-1], size[i]); biases[i-1] = initEmptyMatrix(1, size[i]);
+		activations[i] = initEmptyMatrix(1, size[i]); preactivations[i-1] = initEmptyMatrix(1, size[i]);
+	} return (Network) {layers, size, wghts, biases, activations, preactivations};
+}
+
 Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);

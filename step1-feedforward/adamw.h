@@ -1,4 +1,5 @@
 #include "../matrix/matrix.h"
+#include "feedforward.h"
 #include <math.h>
 
 typedef struct {
