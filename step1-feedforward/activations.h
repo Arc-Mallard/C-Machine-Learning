@@ -3,6 +3,8 @@
 
 float sigmoid(float x);
 
+float sigmoidDx(float x);
+
 float swiglu(float f, float g);
 
 float swigluDx(float f, float g);

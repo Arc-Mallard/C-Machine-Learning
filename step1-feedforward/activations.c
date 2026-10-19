@@ -4,10 +4,6 @@ float swiglu(float f, float g) {
 	return sigmoid(f) * f * g;
 }
 
-float sigmoid(float x) {
-	return 1 / (1.0f + expf(-x));
-}
-
 float swigluDx(float f, float g) {
 	float s = sigmoid(f);
 	return g * (s + f * s * (1.0f - s));
@@ -15,6 +11,14 @@ float swigluDx(float f, float g) {
 
 float swigluDg(float f) {
 	return f * sigmoid(f);
+}
+
+float sigmoid(float x) {
+	return 1 / (1.0f + expf(-x));
+}
+
+float sigmoidDx(float x) {
+	float s = sigmoid(x); return s * (1 - s);
 }
 
 Matrix softmax(Matrix m) {
