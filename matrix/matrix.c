@@ -98,6 +98,15 @@ Matrix addMatrix(Matrix m1, Matrix m2) {
 	return a;
 }
 
+Matrix subtractMatrix(Matrix m1, Matrix m2) {
+    return addMatrix(m1, scale(m2, -1));
+}
+
+// Ex. 1 - M
+Matrix subtractMatrixFrom(Matrix m1, float n) {
+    return add(scale(m1, -1), n);
+}
+
 Matrix copyMatrix(Matrix m) {
 	Matrix c = {m.w, m.h, m.n, malloc(m.n *sizeof(float))};
 	for (int i = 0; i < m.n; i++) {c.d[i] = m.d[i];} return c;
