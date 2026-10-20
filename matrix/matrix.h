@@ -16,6 +16,8 @@ Matrix initEmptyMatrix(int w, int h);
 
 void freeMatrixArr(Matrix* m, int len);
 
+void freeMatrix(Matrix* m);
+
 Matrix multiply(Matrix m1, Matrix m2);
 
 Matrix elementwise(Matrix m1, Matrix m2);

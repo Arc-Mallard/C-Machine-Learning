@@ -6,6 +6,11 @@ Matrix initEmptyMatrix(int w, int h) {
 
 void freeMatrixArr(Matrix* m, int len) {for (int i = 0; i < len; i++) {free(m[i].d);} free(m);}
 
+void freeMatrix(Matrix* m) {
+    free(m->d);
+    free(m);
+}
+
 Matrix multiply(Matrix m1, Matrix m2) {
     Matrix res = {0};
 
@@ -99,12 +104,18 @@ Matrix addMatrix(Matrix m1, Matrix m2) {
 }
 
 Matrix subtractMatrix(Matrix m1, Matrix m2) {
-    return addMatrix(m1, scale(m2, -1));
+    Matrix scaled = scale(m2, -1);
+    Matrix sum = addMatrix(m1, scaled);
+    freeMatrix(&scaled);
+    return sum;
 }
 
 // Ex. 1 - M
 Matrix subtractMatrixFrom(Matrix m1, float n) {
-    return add(scale(m1, -1), n);
+    Matrix scaled = scale(m1, -1);
+    Matrix sum = add(scaled, n);
+    freeMatrix(&scaled);
+    return sum;
 }
 
 Matrix copyMatrix(Matrix m) {
