@@ -25,6 +25,7 @@ Network init(int layers, int* size, float deviation) {
 
 Network initEmptyNet(int layers, int* size) {
 	int* s = malloc(sizeof(int) * layers);
+	s[0] = size[0];
 	int layersAdjust = layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
 	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(layers * sizeof(Matrix));
 	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = initEmptyMatrix(1, size[0]);
