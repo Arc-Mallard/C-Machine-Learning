@@ -7,8 +7,10 @@
 
 #include "step1-feedforward/feedforward.h"
 #include "step1-feedforward/normal.h"
+#include <time.h>
 
 int main() {
+    srand(time(NULL));
 
 	float data1[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
 	Matrix test1 = {2, 3, 6, data1};
