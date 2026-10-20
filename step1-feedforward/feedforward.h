@@ -16,9 +16,13 @@ Matrix forward(Network net, Matrix input);
 
 Network backward(Network net, Matrix output, Matrix expected);
 
-Network train(Network net, Matrix inputs[], Matrix expected[], int epochs);
+Network train(Network net, Matrix inputs[], Matrix expected[], int length, int epochs);
 
 Matrix predict(Network net, Matrix input);
+
+Network copyNet(Network net);
+
+void freeNet(Network net);
 
 unsigned char* serializeNetwork(Network n);
 
