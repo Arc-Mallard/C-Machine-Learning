@@ -1,5 +1,6 @@
+#ifndef FEEDFORWARD_H
+#define FEEDFORWARD_H
 #include "../matrix/matrix.h"
-#include "activations.h"
 
 typedef struct {
 	int layers; int* size; Matrix* weights;
@@ -29,3 +30,5 @@ void printNet(Network net);
 unsigned char* serializeNetwork(Network n);
 
 Network deserializeNetwork(unsigned char* m);
+
+#endif

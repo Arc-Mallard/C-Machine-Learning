@@ -1,6 +1,7 @@
 // https://www.geeksforgeeks.org/machine-learning/what-is-sparse-categorical-crossentropy/
 
 #include "sparce.h"
+#include <math.h>
 
 // ALL matrices in this file should be treated as vectors
 

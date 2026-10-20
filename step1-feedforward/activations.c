@@ -1,4 +1,5 @@
 #include "activations.h"
+#include <math.h>
 
 
 float swiglu(float f, float g) {

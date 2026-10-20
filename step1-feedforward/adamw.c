@@ -1,4 +1,5 @@
 #include "adamw.h"
+#include <math.h>
 
 AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 	int layersAdjust = net.layers - 1;
