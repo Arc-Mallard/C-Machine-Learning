@@ -70,7 +70,25 @@ int main() {
 
 	printf("back propagation test\n");
 	Network backtest = backward(net, output, target);
-	printNet(backtest);
+	printNet(backtest); printf("\n");
+
+	printf("training network: \n");
+	target = predict(net, input);
+	print(target); printf("\n");
+
+	Matrix* inputs = malloc(sizeof(Matrix)*50);
+	Matrix* targets = malloc(sizeof(Matrix)*50);
+	for (int i = 0; i < 50; i++) {
+		inputs[i] = initEmptyMatrix(1, 2);
+		targets[i] = initEmptyMatrix(1, 2);
+		for (int j = 0; j < inputs[i].n; j++) {
+			inputs[i].d[j] = ((float)rand() + 1.0) / ((float)RAND_MAX + 2.0);;
+			targets[i].d[j] = inputs[i].d[j] * -1;
+		}
+	}
+
+	train(backtest, inputs, targets, 50, 10);
+
 
 	printf("Hello World!\n");
 }
