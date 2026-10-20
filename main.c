@@ -60,6 +60,15 @@ int main() {
 	Matrix input = {1, 2, 2, vector};
 	Matrix output = forward(net, input);
 	print(output); printf("\n");
+	printNet(net); printf("\n");
+
+	printf("target: \n");
+	Matrix target = predict(net, input);
+	print(target); printf("\n");
+
+	printf("back propagation test\n");
+	Network backtest = backward(net, output, target);
+	printNet(backtest);
 
 	printf("Hello World!\n");
 }

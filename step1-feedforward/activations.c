@@ -1,5 +1,6 @@
 #include "activations.h"
 
+
 float swiglu(float f, float g) {
 	return sigmoid(f) * f * g;
 }

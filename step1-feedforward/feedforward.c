@@ -1,6 +1,8 @@
 // ALL matrices below should be treated as vectors
-#include "feedforward.h"
 #include "normal.h"
+#include "sparce.h"
+#include "activations.h"
+#include "adamw.h"
 
 Network init(int layers, int* size, float deviation) {
     int layersAdjust = layers - 1;
@@ -47,7 +49,29 @@ Matrix forward(Network net, Matrix input) {
 }
 
 Network backward(Network net, Matrix output, Matrix expected) {
-	return (Network) {0};
+    Matrix delta = sccDerivitive(output, expected);
+    AdamwState adamw = adamwInit(net, 0.01, 0.1);
+
+    for (int i = 0; i < delta.n; i++ ) {
+        delta.d[i] *= sigmoidDx(net.preactivations[net.layers - 2].d[i]);
+    }
+
+    Matrix weightGrad[net.layers - 1], biasGrad[net.layers - 1];
+
+    for (int i = net.layers - 2; i >= 0; i--) {
+        weightGrad[i] = multiply(delta, transpose(net.activations[i]));
+        biasGrad[i] = delta;
+        if (i != 0) {
+            delta = multiply(transpose(net.weights[i]), delta);
+            for (int j = 0; j < delta.n; j++) {
+                delta.d[j] *= sigmoidDx(net.preactivations[i - 1].d[j]);
+            }
+        }
+    }
+
+    Network optimized = adamwOptimize(&adamw, net, weightGrad, biasGrad);
+
+	return optimized;
 }
 
 Network train(Network net, Matrix inputs[], Matrix expected[], int length, int epochs) {
@@ -89,6 +113,16 @@ void freeNet(Network* net) {
 	freeMatrixArr(net -> activations, net -> layers);
 	freeMatrixArr(net -> preactivations, net -> layers - 1);
 	free(net);
+}
+
+void printNet(Network net) {
+    printf("Network:\n");
+    printf("Weights:\n");
+    for (int i = 0; i < net.layers - 1; i++) {
+        printf("%d:\n", i);
+        print(net.weights[i]);
+    }
+    printf("\n");
 }
 
 unsigned char* serializeNetwork(Network n) {
