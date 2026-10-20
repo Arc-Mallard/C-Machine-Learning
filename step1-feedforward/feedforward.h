@@ -22,7 +22,7 @@ Matrix predict(Network net, Matrix input);
 
 Network copyNet(Network net);
 
-void freeNet(Network net);
+void freeNet(Network* net);
 
 unsigned char* serializeNetwork(Network n);
 

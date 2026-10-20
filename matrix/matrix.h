@@ -30,7 +30,7 @@ Matrix addMatrix(Matrix m1, Matrix m2);
 
 Matrix copyMatrix(Matrix m);
 
-Matrix copyMatrixArr(Matrix* m, int len);
+Matrix* copyMatrixArr(Matrix* m, int len);
 
 void print(Matrix m);
 

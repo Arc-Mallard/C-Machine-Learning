@@ -103,8 +103,8 @@ Matrix copyMatrix(Matrix m) {
 	for (int i = 0; i < m.n; i++) {c.d[i] = m.d[i];} return c;
 }
 
-Matrix copyMatrixArr(Matrix* m, int len) {
-	Matrix c = malloc(sizeof(Matrix) * len);
+Matrix* copyMatrixArr(Matrix* m, int len) {
+	Matrix* c = malloc(sizeof(Matrix) * len);
 	for (int i = 0; i < len; i++) {
 		c[i] = copyMatrix(m[i]);
 	} return c;

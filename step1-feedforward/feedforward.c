@@ -21,7 +21,7 @@ Network init(int layers, int* size, float deviation) {
 }
 
 Network initEmptyNet(int layers, int* size) {
-	int s[] = malloc(sizeof(float) * layers);
+	int* s = malloc(sizeof(int) * layers);
 	int layersAdjust = layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
 	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(layers * sizeof(Matrix));
 	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = initEmptyMatrix(1, size[0]);
@@ -56,8 +56,8 @@ Network train(Network net, Matrix inputs[], Matrix expected[], int length, int e
 		for (int j = 0; j < length; j++) {
 			prediction = forward(net, inputs[j]);
 			current = backward(net, prediction, expected[j]);
-			trained = copyNet(current);
-			freeNet(current); freeMatrix(prediction);
+			trained = copyNet(current); freeNet(&current);
+			free(prediction.d); free(&prediction);
 		}
 	} return trained;
 }
@@ -73,7 +73,7 @@ Matrix predict(Network net, Matrix input) {
 }
 
 Network copyNet(Network net) {
-	int s[] = malloc(sizeof(float) * net.layers);
+	int* s = malloc(sizeof(int) * net.layers);
 	int layersAdjust = net.layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
 	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(net.layers * sizeof(Matrix));
 	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = copyMatrix(net.activations[0]);
@@ -83,11 +83,11 @@ Network copyNet(Network net) {
 	} return (Network) {net.layers, s, wghts, biases, activations, preactivations};
 }
 
-void freeNet(Network net) {
-	freeMatrixArr(net.weights, net.layers - 1);
-	freeMatrixArr(net.biases, net.layers - 1);
-	freeMatrixArr(net.activations, net.layers);
-	freeMatrixArr(net.preactivations, net.layers - 1);
+void freeNet(Network* net) {
+	freeMatrixArr(net -> weights, net -> layers - 1);
+	freeMatrixArr(net -> biases, net -> layers - 1);
+	freeMatrixArr(net -> activations, net -> layers);
+	freeMatrixArr(net -> preactivations, net -> layers - 1);
 	free(net);
 }
 
