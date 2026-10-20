@@ -1,4 +1,5 @@
 #include "normal.h"
+#include <math.h>
 
 float gaussianNoise(float mean, float deviation) {
     float u1 = ((float)rand() + 1.0) / ((float)RAND_MAX + 2.0);

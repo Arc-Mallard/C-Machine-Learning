@@ -1,5 +1,7 @@
+#ifndef ACTIVATIONS_H
+#define ACTIVATIONS_H
+
 #include "../matrix/matrix.h"
-#include <math.h>
 
 float sigmoid(float x);
 
@@ -14,3 +16,5 @@ float swigluDg(float f);
 float max(Matrix m);
 
 Matrix softmax(Matrix m);
+
+#endif

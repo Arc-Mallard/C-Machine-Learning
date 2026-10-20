@@ -1,4 +1,5 @@
 // ALL matrices below should be treated as vectors
+#include "feedforward.h"
 #include "normal.h"
 #include "sparce.h"
 #include "activations.h"
