@@ -82,7 +82,7 @@ Network train(Network net, Matrix inputs[], Matrix expected[], int length, int e
 			prediction = forward(net, inputs[j]);
 			current = backward(net, prediction, expected[j]);
 			trained = copyNet(current); freeNet(&current);
-			free(prediction.d); free(&prediction);
+			free(prediction.d);
 		}
 	} return trained;
 }
