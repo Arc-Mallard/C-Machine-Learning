@@ -28,6 +28,10 @@ Matrix add(Matrix m, float a);
 
 Matrix addMatrix(Matrix m1, Matrix m2);
 
+Matrix subtractMatrix(Matrix m1, Matrix m2);
+
+Matrix subtractMatrixFrom(Matrix m1, float n);
+
 Matrix copyMatrix(Matrix m);
 
 Matrix* copyMatrixArr(Matrix* m, int len);
