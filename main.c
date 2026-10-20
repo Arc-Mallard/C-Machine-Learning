@@ -53,16 +53,18 @@ int main() {
 	print(test5);
 	printf("\n");
 
-	printf("initialize neural network and test forward propagation\n");
+	printf("initialize neural network");
 	int sizes[] = {2, 3, 3, 1};
 	Network net = init(4, sizes, 0.1f);
+	printNet(net); printf("\n");
+
+	printf("test forward propagation\n");
 	float vector[] = {1.0, 2.0};
 	Matrix input = {1, 2, 2, vector};
 	Matrix output = forward(net, input);
 	print(output); printf("\n");
-	printNet(net); printf("\n");
 
-	printf("target: \n");
+	printf("prediction: \n");
 	Matrix target = predict(net, input);
 	print(target); printf("\n");
 
