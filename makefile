@@ -7,7 +7,7 @@ SRCS = main.c $(shell find . -mindepth 2 -name '*.c')
 OBJS = $(SRCS:.c=.o)
 
 $(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDLIBS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 clean:
 	rm -f $(OBJS) $(TARGET)
