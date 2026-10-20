@@ -72,22 +72,23 @@ int main() {
 	Network backtest = backward(net, output, target);
 	printNet(backtest); printf("\n");
 
-	printf("training network: \n");
-	target = predict(net, input);
-	print(target); printf("\n");
-
+	printf("training\n");
 	Matrix* inputs = malloc(sizeof(Matrix)*50);
 	Matrix* targets = malloc(sizeof(Matrix)*50);
 	for (int i = 0; i < 50; i++) {
 		inputs[i] = initEmptyMatrix(1, 2);
-		targets[i] = initEmptyMatrix(1, 2);
+		targets[i] = initEmptyMatrix(1, 1);
 		for (int j = 0; j < inputs[i].n; j++) {
 			inputs[i].d[j] = ((float)rand() + 1.0) / ((float)RAND_MAX + 2.0);;
-			targets[i].d[j] = inputs[i].d[j] * -1;
-		}
+		} targets[i].d[0] = inputs[i].d[0] + inputs[i].d[1] * -1;
 	}
 
-	train(backtest, inputs, targets, 50, 10);
+	Network trained = train(backtest, inputs, targets, 50, 10);
+
+	printNet(trained);
+	printf("predicting: \n");
+	target = predict(trained, input);
+	print(target); printf("\n");
 
 
 	printf("Hello World!\n");

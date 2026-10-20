@@ -81,8 +81,7 @@ Network train(Network net, Matrix inputs[], Matrix expected[], int length, int e
 		for (int j = 0; j < length; j++) {
 			prediction = forward(net, inputs[j]);
 			current = backward(net, prediction, expected[j]);
-			trained = copyNet(current); freeNet(&current);
-			free(prediction.d); free(&prediction);
+			trained = current; free(prediction.d);
 		}
 	} return trained;
 }
@@ -97,23 +96,11 @@ Matrix predict(Network net, Matrix input) {
 	} return current;
 }
 
-Network copyNet(Network net) {
-	int* s = malloc(sizeof(int) * net.layers);
-	int layersAdjust = net.layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
-	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(net.layers * sizeof(Matrix));
-	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = copyMatrix(net.activations[0]);
-	for (int i = 1; i < net.layers; i++) {
-		s[i] = net.size[i]; wghts[i-1] = copyMatrix(net.weights[i-1]); biases[i-1] = copyMatrix(net.biases[i-1]);
-		activations[i] = copyMatrix(net.activations[i-1]); preactivations[i-1] = copyMatrix(net.preactivations[i-1]);
-	} return (Network) {net.layers, s, wghts, biases, activations, preactivations};
-}
-
 void freeNet(Network* net) {
 	freeMatrixArr(net -> weights, net -> layers - 1);
 	freeMatrixArr(net -> biases, net -> layers - 1);
 	freeMatrixArr(net -> activations, net -> layers);
 	freeMatrixArr(net -> preactivations, net -> layers - 1);
-	free(net);
 }
 
 void printNet(Network net) {

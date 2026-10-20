@@ -21,8 +21,6 @@ Network train(Network net, Matrix inputs[], Matrix expected[], int length, int e
 
 Matrix predict(Network net, Matrix input);
 
-Network copyNet(Network net);
-
 void freeNet(Network* net);
 
 void printNet(Network net);
