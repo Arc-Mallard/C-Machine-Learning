@@ -1,5 +1,8 @@
 #include "adamw.h"
+#include "../matrix/matrix.h"
+#include "feedforward.h"
 #include <math.h>
+#include <stdlib.h>
 
 AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 	int layersAdjust = net.layers - 1;

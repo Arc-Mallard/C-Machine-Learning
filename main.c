@@ -68,9 +68,11 @@ int main() {
 	Matrix target = predict(net, input);
 	print(target); printf("\n");
 
+	/*
 	printf("back propagation test\n");
 	Network backtest = backward(net, output, target);
 	printNet(backtest); printf("\n");
+	*/
 
 	printf("training\n");
 	Matrix* inputs = malloc(sizeof(Matrix)*50);
@@ -83,7 +85,7 @@ int main() {
 		} targets[i].d[0] = inputs[i].d[0] + inputs[i].d[1] * -1;
 	}
 
-	Network trained = train(backtest, inputs, targets, 50, 10);
+	Network trained = train(net, inputs, targets, 50, 10);
 
 	printNet(trained);
 	printf("predicting: \n");

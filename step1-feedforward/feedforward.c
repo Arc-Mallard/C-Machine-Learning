@@ -1,9 +1,9 @@
 // ALL matrices below should be treated as vectors
 #include "feedforward.h"
+#include "adamw.h"
 #include "normal.h"
 #include "sparce.h"
 #include "activations.h"
-#include "adamw.h"
 
 Network init(int layers, int* size, float deviation) {
     int layersAdjust = layers - 1;
@@ -35,7 +35,6 @@ Network initEmptyNet(int layers, int* size) {
 		s[i] = size[i];
 	} return (Network) {layers, s, wghts, biases, activations, preactivations};
 }
-
 Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);
@@ -50,9 +49,9 @@ Matrix forward(Network net, Matrix input) {
 	} return current;
 }
 
-Network backward(Network net, Matrix output, Matrix expected) {
+Network backward(AdamwState* adamw, Network net, Matrix output, Matrix expected) {
     Matrix delta = sccDerivitive(output, expected);
-    AdamwState adamw = adamwInit(net, 0.01, 0.1);
+    //AdamwState adamw = adamwInit(net, 0.01, 0.1);
 
     for (int i = 0; i < delta.n; i++ ) {
         delta.d[i] *= sigmoidDx(net.preactivations[net.layers - 2].d[i]);
@@ -71,17 +70,18 @@ Network backward(Network net, Matrix output, Matrix expected) {
         }
     }
 
-    Network optimized = adamwOptimize(&adamw, net, weightGrad, biasGrad);
+    Network optimized = adamwOptimize(adamw, net, weightGrad, biasGrad);
 
 	return optimized;
 }
 
 Network train(Network net, Matrix inputs[], Matrix expected[], int length, int epochs) {
+    AdamwState adamw = adamwInit(net, 0.01, 0.1);
 	Network trained, current; Matrix prediction;
 	for (int i = 0; i < epochs; i++) {
 		for (int j = 0; j < length; j++) {
 			prediction = forward(net, inputs[j]);
-			current = backward(net, prediction, expected[j]);
+			current = backward(&adamw, net, prediction, expected[j]);
 			trained = current; free(prediction.d);
 		}
 	} return trained;

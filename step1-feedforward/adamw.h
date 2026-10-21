@@ -1,19 +1,7 @@
 #ifndef ADAMW_H
 #define ADAMW_H
 
-#include "../matrix/matrix.h"
-#include "feedforward.h"
-
-typedef struct {
-	float learningRate; float wghtDecay;
-	float frstDecay; float scndDecay; int step;
-} AdamwParams;
-
-typedef struct {
-	AdamwParams params;
-	Matrix* frstMomentWght; Matrix* scndMomentWght;
-	Matrix* frstMomentBias; Matrix* scndMomentBias;
-} AdamwState;
+#include "../types.h"
 
 void stateAssign(Matrix* s, Matrix m);
 
