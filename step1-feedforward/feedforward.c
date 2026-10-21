@@ -2,7 +2,7 @@
 #include "feedforward.h"
 #include "adamw.h"
 #include "normal.h"
-#include "sparce.h"
+#include "costs.h"
 #include "activations.h"
 
 Network init(int layers, int* size, float deviation) {
@@ -50,7 +50,8 @@ Matrix forward(Network net, Matrix input) {
 }
 
 Network backward(AdamwState* adamw, Network net, Matrix output, Matrix expected) {
-    Matrix delta = sccDerivitive(output, expected);
+    //Matrix delta = sccDerivitive(output, expected);
+    Matrix delta = mseDerivative(output, expected);
     //AdamwState adamw = adamwInit(net, 0.01, 0.1);
 
     for (int i = 0; i < delta.n; i++ ) {
