@@ -126,10 +126,32 @@ void freeNet(Network* net) {
 
 void printNet(Network net) {
     printf("Network:\n");
+
     printf("Weights:\n");
     for (int i = 0; i < net.layers - 1; i++) {
         printf("%d:\n", i);
         print(net.weights[i]);
+    }
+    printf("\n");
+
+    printf("Biases:\n");
+    for (int i = 0; i < net.layers - 1; i++) {
+        printf("%d:\n", i);
+        print(net.biases[i]);
+    }
+    printf("\n");
+
+    printf("Activations:\n");
+    for (int i = 0; i < net.layers; i++) {
+        printf("%d:\n", i);
+        print(net.activations[i]);
+    }
+    printf("\n");
+
+    printf("Preactivations:\n");
+    for (int i = 0; i < net.layers - 1; i++) {
+        printf("%d:\n", i);
+        print(net.preactivations[i]);
     }
     printf("\n");
 }
