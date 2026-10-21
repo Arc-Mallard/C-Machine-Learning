@@ -79,16 +79,27 @@ void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
     }
 
     adamwOptimize(adamw, net, weightGrad, biasGrad);
+
+    for (int i = 0; i < net->layers - 1; i++) {
+        free(weightGrad[i].d);
+        free(biasGrad[i].d);
+    }
 }
 
 void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
     AdamwState adamw = adamwInit(*net, 0.01, 0.1);
 	Network trained, current; Matrix prediction;
 	for (int i = 0; i < epochs; i++) {
+	    float loss = 0.0;
 		for (int j = 0; j < length; j++) {
 			prediction = forward(*net, inputs[j]);
+			loss += mseFunction(prediction, expected[j]);
 			backward(&adamw, net, prediction, expected[j]);
 			free(prediction.d);
+		}
+
+		if (i % 10 == 0 || i == epochs - 1) {
+			printf("epoch %d  loss %f\n", i, loss / length);
 		}
 	}
 

@@ -9,7 +9,7 @@ float sccFunction(Matrix output, Matrix target);
 
 Matrix sccDerivitive(Matrix output, Matrix target);
 
-float meanSquared(Matrix output, Matrix target);
+float mseFunction(Matrix output, Matrix target);
 Matrix mseDerivative(Matrix output, Matrix target);
 
 #endif
