@@ -1,7 +1,7 @@
 #include "matrix.h"
 
 Matrix initEmptyMatrix(int w, int h) {
-	int n = w * h; return (Matrix) {w, h, n, calloc(n, sizeof(float))};
+	int n = w * h; return (Matrix) {w, h, n, malloc(n, sizeof(float))};
 }
 
 void freeMatrixArr(Matrix* m, int len) {for (int i = 0; i < len; i++) {free(m[i].d);} free(m);}
