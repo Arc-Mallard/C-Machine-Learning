@@ -41,51 +41,58 @@ Matrix forward(Network net, Matrix input) {
 	for (int i = 0; i < net.layers-1; i++) {
 		Matrix product = multiply(net.weights[i], current);
 		Matrix sum = addMatrix(net.biases[i], product);
-		net.preactivations[i] = copyMatrix(sum);
+		//net.preactivations[i] = copyMatrix(sum);
+		memcpy(net.preactivations[i].d, sum.d, sum.n * sizeof(float));
 		for (int j = 0; j < sum.n; j++) {
 			sum.d[j] = sigmoid(sum.d[j]);
-		} net.activations[i+1] = copyMatrix(sum);
+		}
+		//net.activations[i+1] = copyMatrix(sum);
+		memcpy(net.activations[i+1].d, sum.d, sum.n * sizeof(float));
 		free(product.d); free(current.d); current = sum;
 	} return current;
 }
 
-Network backward(AdamwState* adamw, Network net, Matrix output, Matrix expected) {
+void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
     //Matrix delta = sccDerivitive(output, expected);
     Matrix delta = mseDerivative(output, expected);
     //AdamwState adamw = adamwInit(net, 0.01, 0.1);
 
     for (int i = 0; i < delta.n; i++ ) {
-        delta.d[i] *= sigmoidDx(net.preactivations[net.layers - 2].d[i]);
+        delta.d[i] *= sigmoidDx(net->preactivations[net->layers - 2].d[i]);
     }
 
-    Matrix weightGrad[net.layers - 1], biasGrad[net.layers - 1];
+    Matrix weightGrad[net->layers - 1], biasGrad[net->layers - 1];
 
-    for (int i = net.layers - 2; i >= 0; i--) {
-        weightGrad[i] = multiply(delta, transpose(net.activations[i]));
+    for (int i = net->layers - 2; i >= 0; i--) {
+        Matrix aT = transpose(net->activations[i]);
+        weightGrad[i] = multiply(delta, aT);
+        free(aT.d);
         biasGrad[i] = delta;
         if (i != 0) {
-            delta = multiply(transpose(net.weights[i]), delta);
+            Matrix wT = transpose(net->weights[i]);
+            delta = multiply(wT, delta);
+            free(wT.d);
             for (int j = 0; j < delta.n; j++) {
-                delta.d[j] *= sigmoidDx(net.preactivations[i - 1].d[j]);
+                delta.d[j] *= sigmoidDx(net->preactivations[i - 1].d[j]);
             }
         }
     }
 
-    Network optimized = adamwOptimize(adamw, net, weightGrad, biasGrad);
-
-	return optimized;
+    adamwOptimize(adamw, net, weightGrad, biasGrad);
 }
 
-Network train(Network net, Matrix inputs[], Matrix expected[], int length, int epochs) {
-    AdamwState adamw = adamwInit(net, 0.01, 0.1);
+void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
+    AdamwState adamw = adamwInit(*net, 0.01, 0.1);
 	Network trained, current; Matrix prediction;
 	for (int i = 0; i < epochs; i++) {
 		for (int j = 0; j < length; j++) {
-			prediction = forward(net, inputs[j]);
-			current = backward(&adamw, net, prediction, expected[j]);
-			trained = current; free(prediction.d);
+			prediction = forward(*net, inputs[j]);
+			backward(&adamw, net, prediction, expected[j]);
+			free(prediction.d);
 		}
-	} return trained;
+	}
+
+	adamwFree(&adamw, *net);
 }
 
 Matrix predict(Network net, Matrix input) {

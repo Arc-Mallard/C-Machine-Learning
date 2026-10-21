@@ -1,6 +1,6 @@
 #include "adamw.h"
 #include "../matrix/matrix.h"
-#include "feedforward.h"
+//#include "feedforward.h"
 #include <math.h>
 #include <stdlib.h>
 
@@ -28,18 +28,16 @@ void adamwFree(AdamwState* state, Network net) {
 	free(state -> frstMomentBias); free(state -> scndMomentBias);
 }
 
-Network adamwOptimize(AdamwState* state, Network net, Matrix wghtGrad[], Matrix biasGrad[]) {
-	Network n = initEmptyNet(net.layers, net.size); state -> params.step++;
-	freeMatrixArr(n.activations, net.layers); freeMatrixArr(n.preactivations, net.layers - 1);
-	n.activations = net.activations; n.preactivations = net.preactivations;
+void adamwOptimize(AdamwState* state, Network* net, Matrix wghtGrad[], Matrix biasGrad[]) {
+	state -> params.step++;
 	float frstPowf = 1 - powf(state -> params.frstDecay, state -> params.step), scndPowf = 1 - powf(state -> params.scndDecay, state -> params.step);
-	for (int i = 0; i < net.layers - 1; i++) {
-		adamwStep(state -> params, state -> frstMomentWght[i], state -> scndMomentWght[i], wghtGrad[i], &n.weights[i], net.weights[i], frstPowf, scndPowf, 1);
-		adamwStep(state -> params, state -> frstMomentBias[i], state -> scndMomentBias[i], biasGrad[i], &n.biases[i], net.biases[i], frstPowf, scndPowf, 0);
-	} return n;
+	for (int i = 0; i < net->layers - 1; i++) {
+		adamwStep(state -> params, state -> frstMomentWght[i], state -> scndMomentWght[i], wghtGrad[i], net->weights[i], frstPowf, scndPowf, 1);
+		adamwStep(state -> params, state -> frstMomentBias[i], state -> scndMomentBias[i], biasGrad[i], net->biases[i], frstPowf, scndPowf, 0);
+	}
 }
 
-void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w2, float frstPowf, float scndPowf, int w) {
+void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix w1, float frstPowf, float scndPowf, int w) {
 	float frstBias, scndBias;
 	for (int i = 0; i < f.n; i++) {
 		// m1 = b1 * m0 + (1 - b1) * g1
@@ -51,8 +49,9 @@ void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix* w1, Matrix w
 		// vhat1 = v1 / (1 - b2^t);
 		scndBias = s.d[i] / scndPowf;
 		// theta1 = theta0 - alpha X mhat1 / (sqrt(vhat1) + epsilon)
-		w1 -> d[i] = w2.d[i] - p.learningRate * frstBias / (sqrtf(scndBias) + EPSILON);
+		float old = w1.d[i];
+		w1.d[i] = old - p.learningRate * frstBias / (sqrtf(scndBias) + EPSILON);
 		// theta1 = theta1  - alpha * lambda * theta0 (if NOT the bias)
-		if (w) {w1 -> d[i] = w1 -> d[i] - p.learningRate * p.wghtDecay * w2.d[i];}
+		if (w) {w1.d[i] = w1.d[i] - p.learningRate * p.wghtDecay * old;}
 	}
 }

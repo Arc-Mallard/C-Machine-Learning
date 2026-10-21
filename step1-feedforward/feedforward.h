@@ -10,9 +10,9 @@ Network initEmptyNet(int layers, int* size);
 
 Matrix forward(Network net, Matrix input);
 
-Network backward(AdamwState* adamw, Network net, Matrix output, Matrix expected);
+void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected);
 
-Network train(Network net, Matrix inputs[], Matrix expected[], int length, int epochs);
+void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epochs);
 
 Matrix predict(Network net, Matrix input);
 

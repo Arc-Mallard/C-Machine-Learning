@@ -85,11 +85,11 @@ int main() {
 		} targets[i].d[0] = inputs[i].d[0] + inputs[i].d[1] * -1;
 	}
 
-	Network trained = train(net, inputs, targets, 50, 10);
+	train(&net, inputs, targets, 50, 10);
 
-	printNet(trained);
+	printNet(net);
 	printf("predicting: \n");
-	target = predict(trained, input);
+	target = predict(net, input);
 	print(target); printf("\n");
 
 
