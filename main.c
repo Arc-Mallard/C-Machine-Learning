@@ -5,8 +5,8 @@
  *      Author: nicol
  */
 
-#include "step1-feedforward/feedforward.h"
-#include "step1-feedforward/normal.h"
+#include "neural/feedforward.h"
+#include "neural/normal.h"
 #include <time.h>
 
 int main() {
@@ -103,6 +103,10 @@ int main() {
 	Matrix inputValue3 = {1, 2, 2, testValue3};
 	target = predict(net, inputValue3);
 	printf("0.1 + 0.1 = "); print(target); printf("\n");
+
+	printf("serialize network\n");
+	printNet(deserializeNetwork(serializeNetwork(net)));
+	printf("\n");
 
 
 	printf("Hello World!\n");

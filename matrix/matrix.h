@@ -7,6 +7,7 @@
 #include "../types.h"
 
 #define EPSILON 1e-7f
+#define sizeofmatrix(m) (3 * sizeof(int) + m.n * sizeof(float))
 
 Matrix initEmptyMatrix(int w, int h);
 

@@ -1,4 +1,5 @@
 // ALL matrices below should be treated as vectors
+#include "../matrix/matrix.h"
 #include "feedforward.h"
 #include "adamw.h"
 #include "normal.h"
@@ -134,10 +135,85 @@ void printNet(Network net) {
 }
 
 unsigned char* serializeNetwork(Network n) {
-	unsigned char* temp;
-	return temp;
+    int size = sizeof(int) + n.layers * sizeof(int);
+    for (int i = 0; i < n.layers - 1; i++) {
+        size += sizeofmatrix(n.weights[i]);
+        size += sizeofmatrix(n.biases[i]);
+        size += sizeofmatrix(n.activations[i]);
+        size += sizeofmatrix(n.preactivations[i]);
+    }
+
+    size += sizeofmatrix(n.activations[n.layers - 1]);
+
+    unsigned char* bytes = malloc(size);
+    unsigned char* p = bytes;
+    unsigned char* tmp;
+
+    memcpy(p, &n.layers, sizeof(int));
+    p += sizeof(int);
+    memcpy(p, n.size, n.layers * sizeof(int));
+    p += n.layers * sizeof(int);
+
+    for (int i = 0; i < n.layers - 1; i++) {
+        tmp = serializeMatrix(n.weights[i]);
+        memcpy(p, tmp, sizeofmatrix(n.weights[i]));
+        free(tmp);
+        p += sizeofmatrix(n.weights[i]);
+
+        tmp = serializeMatrix(n.biases[i]);
+        memcpy(p, tmp, sizeofmatrix(n.biases[i]));
+        free(tmp);
+        p += sizeofmatrix(n.biases[i]);
+
+        tmp = serializeMatrix(n.activations[i]);
+        memcpy(p, tmp, sizeofmatrix(n.activations[i]));
+        free(tmp);
+        p += sizeofmatrix(n.activations[i]);
+
+        tmp = serializeMatrix(n.preactivations[i]);
+        memcpy(p, tmp, sizeofmatrix(n.preactivations[i]));
+        free(tmp);
+        p += sizeofmatrix(n.preactivations[i]);
+    }
+    tmp = serializeMatrix(n.activations[n.layers - 1]);
+    memcpy(p, tmp, sizeofmatrix(n.activations[n.layers - 1]));
+    free(tmp);
+
+    return bytes;
 }
 
 Network deserializeNetwork(unsigned char* m) {
-	return (Network) {0};
+    Network n = {0};
+    unsigned char* p = m;
+
+    memcpy(&n.layers, p, sizeof(int));
+    p += sizeof(int);
+    int layersAdjusted = n.layers - 1;
+
+    n.size = malloc(n.layers * sizeof(int));
+    memcpy(n.size, p, n.layers * sizeof(int));
+    p += n.layers * sizeof(int);
+
+    n.weights = malloc(layersAdjusted * sizeof(Matrix));
+    n.biases = malloc(layersAdjusted * sizeof(Matrix));
+    n.activations = malloc(n.layers * sizeof(Matrix));
+    n.preactivations = malloc(layersAdjusted * sizeof(Matrix));
+
+    for (int i = 0; i < layersAdjusted; i++) {
+        n.weights[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.weights[i]);
+
+        n.biases[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.biases[i]);
+
+        n.activations[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.activations[i]);
+
+        n.preactivations[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.preactivations[i]);
+    }
+
+    n.activations[layersAdjusted] = deserializeMatrix(p);
+
+	return n;
 }
