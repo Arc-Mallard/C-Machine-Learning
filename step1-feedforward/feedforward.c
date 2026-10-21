@@ -80,10 +80,8 @@ void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
 
     adamwOptimize(adamw, net, weightGrad, biasGrad);
 
-    for (int i = 0; i < net->layers - 1; i++) {
-        free(weightGrad[i].d);
-        free(biasGrad[i].d);
-    }
+    freeMatrixArr(weightGrad, net->layers - 1);
+    freeMatrixArr(biasGrad, net->layers - 1);
 }
 
 void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
