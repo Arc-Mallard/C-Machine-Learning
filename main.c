@@ -31,7 +31,9 @@ int main() {
 	print(test4); printf("\n");
 
 	printf("serializing transposed matrix \n");
-	print(deserializeMatrix(serializeMatrix(test4)));
+	unsigned char* bytes = serializeMatrix(test4);
+	print(deserializeMatrix(bytes));
+	free(bytes);
 	printf("\n");
 
 	printf("gaussian noise\n");
@@ -105,7 +107,9 @@ int main() {
 	printf("0.1 + 0.1 = "); print(target); printf("\n");
 
 	printf("serialize network\n");
-	printNet(deserializeNetwork(serializeNetwork(net)));
+	bytes = serializeNetwork(net);
+	printNet(deserializeNetwork(bytes));
+	free(bytes);
 	printf("\n");
 
 
