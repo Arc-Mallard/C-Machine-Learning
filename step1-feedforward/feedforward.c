@@ -88,7 +88,7 @@ void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
 
 void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
     AdamwState adamw = adamwInit(*net, 0.01, 0.1);
-	Network trained, current; Matrix prediction;
+	Matrix prediction;
 	for (int i = 0; i < epochs; i++) {
 	    float loss = 0.0;
 		for (int j = 0; j < length; j++) {
