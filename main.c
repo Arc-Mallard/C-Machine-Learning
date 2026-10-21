@@ -75,22 +75,34 @@ int main() {
 	*/
 
 	printf("training\n");
-	Matrix* inputs = malloc(sizeof(Matrix)*50);
-	Matrix* targets = malloc(sizeof(Matrix)*50);
-	for (int i = 0; i < 50; i++) {
+	Matrix* inputs = malloc(sizeof(Matrix)*500);
+	Matrix* targets = malloc(sizeof(Matrix)*500);
+	for (int i = 0; i < 500; i++) {
 		inputs[i] = initEmptyMatrix(1, 2);
 		targets[i] = initEmptyMatrix(1, 1);
 		for (int j = 0; j < inputs[i].n; j++) {
-			inputs[i].d[j] = ((float)rand() + 1.0) / ((float)RAND_MAX + 2.0);;
-		} targets[i].d[0] = inputs[i].d[0] + inputs[i].d[1] * -1;
+			inputs[i].d[j] = (((float)rand() + 1.0) / ((float)RAND_MAX + 2.0) / 2);
+		} targets[i].d[0] = inputs[i].d[0] + inputs[i].d[1];
 	}
 
-	train(&net, inputs, targets, 50, 10);
+	train(&net, inputs, targets, 500, 100);
 
 	printNet(net);
 	printf("predicting: \n");
-	target = predict(net, input);
-	print(target); printf("\n");
+	float testValue1[] = {0.2, 0.5};
+	Matrix inputValue1 = {1, 2, 2, testValue1};
+	target = predict(net, inputValue1);
+	printf("0.2 + 0.5 = "); print(target); printf("\n");
+
+	float testValue2[] = {0.5, 0.4};
+	Matrix inputValue2 = {1, 2, 2, testValue2};
+	target = predict(net, inputValue2);
+	printf("0.5 + 0.4 = "); print(target); printf("\n");
+
+	float testValue3[] = {0.1, 0.1};
+	Matrix inputValue3 = {1, 2, 2, testValue3};
+	target = predict(net, inputValue3);
+	printf("0.1 + 0.1 = "); print(target); printf("\n");
 
 
 	printf("Hello World!\n");
