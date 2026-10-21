@@ -127,6 +127,14 @@ void freeNet(Network* net) {
 void printNet(Network net) {
     printf("Network:\n");
 
+    printf("Layers: %d\n\n", net.layers);
+
+    printf("Size:\n");
+    for (int i = 0; i < net.layers; i++) {
+        printf("%d, ", net.size[i]);
+    }
+    printf("\n\n");
+
     printf("Weights:\n");
     for (int i = 0; i < net.layers - 1; i++) {
         printf("%d:\n", i);
