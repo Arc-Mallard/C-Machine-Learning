@@ -136,6 +136,7 @@ void printNet(Network net) {
 
 unsigned char* serializeNetwork(Network n) {
     int size = sizeof(int) + n.layers * sizeof(int);
+
     for (int i = 0; i < n.layers - 1; i++) {
         size += sizeofmatrix(n.weights[i]);
         size += sizeofmatrix(n.biases[i]);
@@ -175,6 +176,7 @@ unsigned char* serializeNetwork(Network n) {
         free(tmp);
         p += sizeofmatrix(n.preactivations[i]);
     }
+
     tmp = serializeMatrix(n.activations[n.layers - 1]);
     memcpy(p, tmp, sizeofmatrix(n.activations[n.layers - 1]));
     free(tmp);
