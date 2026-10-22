@@ -5,7 +5,7 @@
  *      Author: nicol
  */
 
-#include "neural/feedforward_sigmoid.h"
+#include "neural/feedforward.h"
 #include "neural/normal.h"
 #include <time.h>
 
