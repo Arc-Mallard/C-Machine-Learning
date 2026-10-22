@@ -1,10 +1,10 @@
 // ALL matrices below should be treated as vectors
 #include "../matrix/matrix.h"
+#include "../neural/normal.h"
+#include "../neural/costs.h"
+#include "../neural/activations.h"
 #include "feedforward_old.h"
-#include "adamw.h"
-#include "normal.h"
-#include "costs.h"
-#include "activations.h"
+#include "adamw_old.h"
 
 Old_Network old_init(int layers, int* size, float deviation) {
     int layersAdjust = layers - 1;
@@ -51,7 +51,7 @@ Matrix old_forward(Old_Network net, Matrix input) {
 	} return current;
 }
 
-void old_backward(AdamwState* adamw, Old_Network* net, Matrix output, Matrix expected) {
+void old_backward(Old_AdamwState* adamw, Old_Network* net, Matrix output, Matrix expected) {
     Matrix delta = mseDerivative(output, expected);
 
     for (int i = 0; i < delta.n; i++ ) {
@@ -75,7 +75,7 @@ void old_backward(AdamwState* adamw, Old_Network* net, Matrix output, Matrix exp
         }
     }
 
-//    adamwOptimize(adamw, net, weightGrad, biasGrad);
+    old_adamwOptimize(adamw, net, weightGrad, biasGrad);
 
     for (int i = 0; i < net->layers - 1; i++) {
         free(weightGrad[i].d);
@@ -84,14 +84,14 @@ void old_backward(AdamwState* adamw, Old_Network* net, Matrix output, Matrix exp
 }
 
 void old_train(Old_Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
-//    AdamwState adamw = adamwInit(*net, 0.01, 0.1);
+    Old_AdamwState adamw = old_adamwInit(*net, 0.01, 0.1);
 	Matrix prediction;
 	for (int i = 0; i < epochs; i++) {
 	    float loss = 0.0;
 		for (int j = 0; j < length; j++) {
-//			old_prediction = forward(*net, inputs[j]);
+			prediction = old_forward(*net, inputs[j]);
 			loss += mseFunction(prediction, expected[j]);
-//			old_backward(&adamw, net, prediction, expected[j]);
+			old_backward(&adamw, net, prediction, expected[j]);
 			free(prediction.d);
 		}
 
@@ -100,7 +100,7 @@ void old_train(Old_Network* net, Matrix inputs[], Matrix expected[], int length,
 		}
 	}
 
-//	adamwFree(&adamw, *net);
+	old_adamwFree(&adamw, *net);
 }
 
 Matrix old_predict(Old_Network net, Matrix input) {
@@ -160,7 +160,7 @@ void old_printNet(Old_Network net) {
     printf("\n");
 }
 
-unsigned char* old_serializeOld_Network(Old_Network n) {
+unsigned char* old_serializeNet(Old_Network n) {
     int size = sizeof(int) + n.layers * sizeof(int);
 
     for (int i = 0; i < n.layers - 1; i++) {
@@ -210,7 +210,7 @@ unsigned char* old_serializeOld_Network(Old_Network n) {
     return bytes;
 }
 
-Old_Network old_deserializeOld_Network(unsigned char* m) {
+Old_Network old_deserializeNet(unsigned char* m) {
     Old_Network n = {0};
     unsigned char* p = m;
 
