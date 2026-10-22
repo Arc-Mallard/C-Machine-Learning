@@ -10,6 +10,12 @@ typedef struct {
 	int layers; int* size; Matrix* weights;
 	// These matrices below are actually all vectors
 	Matrix* biases; Matrix* activations; Matrix* preactivations;
+} Old_Network;
+
+typedef struct {
+	int layers; int* size; Matrix* weights;
+	// These matrices below are actually all vectors
+	Matrix* biases; Matrix* activations; Matrix* preactivations;
 } Network;
 
 typedef struct {
