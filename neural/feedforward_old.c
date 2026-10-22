@@ -89,9 +89,9 @@ void old_train(Old_Network* net, Matrix inputs[], Matrix expected[], int length,
 	for (int i = 0; i < epochs; i++) {
 	    float loss = 0.0;
 		for (int j = 0; j < length; j++) {
-//			prediction = forward(*net, inputs[j]);
+//			old_prediction = forward(*net, inputs[j]);
 			loss += mseFunction(prediction, expected[j]);
-//			backward(&adamw, net, prediction, expected[j]);
+//			old_backward(&adamw, net, prediction, expected[j]);
 			free(prediction.d);
 		}
 
