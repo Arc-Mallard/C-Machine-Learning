@@ -2,7 +2,7 @@
  * main.c
  *
  *  Created on: Oct 9, 2026
- *      Author: nicol, eepy
+ *      Author: nicol, eepy :D
  */
 
 #include "old/feedforward.h"
