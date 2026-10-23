@@ -1,12 +1,13 @@
 // ALL matrices below should be treated as vectors
+#include "types.h"
+#include "feedforward.h"
 #include "../matrix/matrix.h"
 #include "../neural/normal.h"
 #include "../neural/costs.h"
 #include "../neural/activations.h"
-#include "feedforward_old.h"
-#include "adamw_old.h"
+#include "adamw.h"
 
-Old_Network old_init(int layers, int* size, float deviation) {
+Network init(int layers, int* size, float deviation) {
     int layersAdjust = layers - 1;
     Matrix* wghts = calloc(layersAdjust, sizeof(Matrix));
     Matrix* biases = calloc(layersAdjust, sizeof(Matrix));
@@ -21,10 +22,10 @@ Old_Network old_init(int layers, int* size, float deviation) {
         preactivations[i - 1] = initEmptyMatrix(1, size[i]);
     }
 
-	return (Old_Network) {layers, size, wghts, biases, activations, preactivations};
+	return (Network) {layers, size, wghts, biases, activations, preactivations};
 }
 
-Old_Network old_initEmptyNet(int layers, int* size) {
+Network initEmptyNet(int layers, int* size) {
 	int* s = malloc(sizeof(int) * layers);
 	s[0] = size[0];
 	int layersAdjust = layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
@@ -34,9 +35,9 @@ Old_Network old_initEmptyNet(int layers, int* size) {
 		wghts[i-1] = initEmptyMatrix(size[i-1], size[i]); biases[i-1] = initEmptyMatrix(1, size[i]);
 		activations[i] = initEmptyMatrix(1, size[i]); preactivations[i-1] = initEmptyMatrix(1, size[i]);
 		s[i] = size[i];
-	} return (Old_Network) {layers, s, wghts, biases, activations, preactivations};
+	} return (Network) {layers, s, wghts, biases, activations, preactivations};
 }
-Matrix old_forward(Old_Network net, Matrix input) {
+Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);
 	for (int i = 0; i < net.layers-1; i++) {
@@ -51,7 +52,7 @@ Matrix old_forward(Old_Network net, Matrix input) {
 	} return current;
 }
 
-void old_backward(Old_AdamwState* adamw, Old_Network* net, Matrix output, Matrix expected) {
+void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
     Matrix delta = mseDerivative(output, expected);
 
     for (int i = 0; i < delta.n; i++ ) {
@@ -75,7 +76,7 @@ void old_backward(Old_AdamwState* adamw, Old_Network* net, Matrix output, Matrix
         }
     }
 
-    old_adamwOptimize(adamw, net, weightGrad, biasGrad);
+    adamwOptimize(adamw, net, weightGrad, biasGrad);
 
     for (int i = 0; i < net->layers - 1; i++) {
         free(weightGrad[i].d);
@@ -83,15 +84,15 @@ void old_backward(Old_AdamwState* adamw, Old_Network* net, Matrix output, Matrix
     }
 }
 
-void old_train(Old_Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
-    Old_AdamwState adamw = old_adamwInit(*net, 0.01, 0.1);
+void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epochs) {
+    AdamwState adamw = adamwInit(*net, 0.01, 0.1);
 	Matrix prediction;
 	for (int i = 0; i < epochs; i++) {
 	    float loss = 0.0;
 		for (int j = 0; j < length; j++) {
-			prediction = old_forward(*net, inputs[j]);
+			prediction = forward(*net, inputs[j]);
 			loss += mseFunction(prediction, expected[j]);
-			old_backward(&adamw, net, prediction, expected[j]);
+			backward(&adamw, net, prediction, expected[j]);
 			free(prediction.d);
 		}
 
@@ -100,10 +101,10 @@ void old_train(Old_Network* net, Matrix inputs[], Matrix expected[], int length,
 		}
 	}
 
-	old_adamwFree(&adamw, *net);
+	adamwFree(&adamw, *net);
 }
 
-Matrix old_predict(Old_Network net, Matrix input) {
+Matrix predict(Network net, Matrix input) {
 	Matrix current = copyMatrix(input);
 	for (int i = 0; i < net.layers-1; i++) {
 		Matrix product = multiply(net.weights[i], current);
@@ -113,15 +114,15 @@ Matrix old_predict(Old_Network net, Matrix input) {
 	} return current;
 }
 
-void old_freeNet(Old_Network* net) {
+void freeNet(Network* net) {
 	freeMatrixArr(net -> weights, net -> layers - 1);
 	freeMatrixArr(net -> biases, net -> layers - 1);
 	freeMatrixArr(net -> activations, net -> layers);
 	freeMatrixArr(net -> preactivations, net -> layers - 1);
 }
 
-void old_printNet(Old_Network net) {
-    printf("Old_Network:\n");
+void printNet(Network net) {
+    printf("Network:\n");
 
     printf("Layers: %d\n\n", net.layers);
 
@@ -160,7 +161,7 @@ void old_printNet(Old_Network net) {
     printf("\n");
 }
 
-unsigned char* old_serializeNet(Old_Network n) {
+unsigned char* serializeNet(Network n) {
     int size = sizeof(int) + n.layers * sizeof(int);
 
     for (int i = 0; i < n.layers - 1; i++) {
@@ -210,8 +211,8 @@ unsigned char* old_serializeNet(Old_Network n) {
     return bytes;
 }
 
-Old_Network old_deserializeNet(unsigned char* m) {
-    Old_Network n = {0};
+Network deserializeNet(unsigned char* m) {
+    Network n = {0};
     unsigned char* p = m;
 
     memcpy(&n.layers, p, sizeof(int));

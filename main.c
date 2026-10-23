@@ -5,7 +5,7 @@
  *      Author: nicol
  */
 
-#include "neural/feedforward.h"
+#include "old/feedforward.h"
 #include "neural/normal.h"
 #include <time.h>
 
@@ -107,8 +107,8 @@ int main() {
 	printf("0.1 + 0.1 = "); print(target); printf("\n");
 
 	printf("serialize network\n");
-	bytes = serializeNetwork(net);
-	printNet(deserializeNetwork(bytes));
+	bytes = serializeNet(net);
+	printNet(deserializeNet(bytes));
 	free(bytes);
 	printf("\n");
 
