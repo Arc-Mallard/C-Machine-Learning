@@ -37,18 +37,18 @@ Network initEmptyNet(int layers, int* size) {
 	} return (Network) {layers, s, wghts, biases, activations, preactivations};
 }
 Matrix forward(Network net, Matrix input) {
-	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
+	memcpy(net.activations1[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);
 	for (int i = 0; i < net.layers-1; i++) {
-		Matrix product = multiply(net.weights[i], current);
-		Matrix sum = addMatrix(net.biases[i], product);
+		Matrix product = multiply(net.weights1[i], current);
+		Matrix sum = addMatrix(net.biases1[i], product);
 		//net.preactivations[i] = copyMatrix(sum);
-		memcpy(net.preactivations[i].d, sum.d, sum.n * sizeof(float));
+		memcpy(net.preactivations1[i].d, sum.d, sum.n * sizeof(float));
 		for (int j = 0; j < sum.n; j++) {
 			sum.d[j] = sigmoid(sum.d[j]);
 		}
 		//net.activations[i+1] = copyMatrix(sum);
-		memcpy(net.activations[i+1].d, sum.d, sum.n * sizeof(float));
+		memcpy(net.activations1[i+1].d, sum.d, sum.n * sizeof(float));
 		free(product.d); free(current.d); current = sum;
 	} return current;
 }
@@ -59,22 +59,22 @@ void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
     //AdamwState adamw = adamwInit(net, 0.01, 0.1);
 
     for (int i = 0; i < delta.n; i++ ) {
-        delta.d[i] *= sigmoidDx(net->preactivations[net->layers - 2].d[i]);
+        delta.d[i] *= sigmoidDx(net->preactivations1[net->layers - 2].d[i]);
     }
 
     Matrix weightGrad[net->layers - 1], biasGrad[net->layers - 1];
 
     for (int i = net->layers - 2; i >= 0; i--) {
-        Matrix aT = transpose(net->activations[i]);
+        Matrix aT = transpose(net->activations1[i]);
         weightGrad[i] = multiply(delta, aT);
         free(aT.d);
         biasGrad[i] = delta;
         if (i != 0) {
-            Matrix wT = transpose(net->weights[i]);
+            Matrix wT = transpose(net->weights1[i]);
             delta = multiply(wT, delta);
             free(wT.d);
             for (int j = 0; j < delta.n; j++) {
-                delta.d[j] *= sigmoidDx(net->preactivations[i - 1].d[j]);
+                delta.d[j] *= sigmoidDx(net->preactivations1[i - 1].d[j]);
             }
         }
     }
@@ -110,18 +110,18 @@ void train(Network* net, Matrix inputs[], Matrix expected[], int length, int epo
 Matrix predict(Network net, Matrix input) {
 	Matrix current = copyMatrix(input);
 	for (int i = 0; i < net.layers-1; i++) {
-		Matrix product = multiply(net.weights[i], current);
-		Matrix sum = addMatrix(net.biases[i], product);
+		Matrix product = multiply(net.weights1[i], current);
+		Matrix sum = addMatrix(net.biases1[i], product);
 		for (int j = 0; j < sum.n; j++) {sum.d[j] = sigmoid(sum.d[j]);}
 		free(product.d); free(current.d); current = sum;
 	} return current;
 }
 
 void freeNet(Network* net) {
-	freeMatrixArr(net -> weights, net -> layers - 1);
-	freeMatrixArr(net -> biases, net -> layers - 1);
-	freeMatrixArr(net -> activations, net -> layers);
-	freeMatrixArr(net -> preactivations, net -> layers - 1);
+	freeMatrixArr(net -> weights1, net -> layers - 1);
+	freeMatrixArr(net -> biases1, net -> layers - 1);
+	freeMatrixArr(net -> activations1, net -> layers);
+	freeMatrixArr(net -> preactivations1, net -> layers - 1);
 }
 
 void printNet(Network net) {
@@ -138,43 +138,43 @@ void printNet(Network net) {
     printf("Weights:\n");
     for (int i = 0; i < net.layers - 1; i++) {
         printf("%d:\n", i);
-        print(net.weights[i]);
+        print(net.weights1[i]);
     }
     printf("\n");
 
     printf("Biases:\n");
     for (int i = 0; i < net.layers - 1; i++) {
         printf("%d:\n", i);
-        print(net.biases[i]);
+        print(net.biases1[i]);
     }
     printf("\n");
 
     printf("Activations:\n");
     for (int i = 0; i < net.layers; i++) {
         printf("%d:\n", i);
-        print(net.activations[i]);
+        print(net.activations1[i]);
     }
     printf("\n");
 
     printf("Preactivations:\n");
     for (int i = 0; i < net.layers - 1; i++) {
         printf("%d:\n", i);
-        print(net.preactivations[i]);
+        print(net.preactivations1[i]);
     }
     printf("\n");
 }
 
-unsigned char* serializeNetwork(Network n) {
+unsigned char* serializeNet(Network n) {
     int size = sizeof(int) + n.layers * sizeof(int);
 
     for (int i = 0; i < n.layers - 1; i++) {
-        size += sizeofmatrix(n.weights[i]);
-        size += sizeofmatrix(n.biases[i]);
-        size += sizeofmatrix(n.activations[i]);
-        size += sizeofmatrix(n.preactivations[i]);
+        size += sizeofmatrix(n.weights1[i]);
+        size += sizeofmatrix(n.biases1[i]);
+        size += sizeofmatrix(n.activations1[i]);
+        size += sizeofmatrix(n.preactivations1[i]);
     }
 
-    size += sizeofmatrix(n.activations[n.layers - 1]);
+    size += sizeofmatrix(n.activations1[n.layers - 1]);
 
     unsigned char* bytes = malloc(size);
     unsigned char* p = bytes;
@@ -186,35 +186,35 @@ unsigned char* serializeNetwork(Network n) {
     p += n.layers * sizeof(int);
 
     for (int i = 0; i < n.layers - 1; i++) {
-        tmp = serializeMatrix(n.weights[i]);
-        memcpy(p, tmp, sizeofmatrix(n.weights[i]));
+        tmp = serializeMatrix(n.weights1[i]);
+        memcpy(p, tmp, sizeofmatrix(n.weights1[i]));
         free(tmp);
-        p += sizeofmatrix(n.weights[i]);
+        p += sizeofmatrix(n.weights1[i]);
 
-        tmp = serializeMatrix(n.biases[i]);
-        memcpy(p, tmp, sizeofmatrix(n.biases[i]));
+        tmp = serializeMatrix(n.biases1[i]);
+        memcpy(p, tmp, sizeofmatrix(n.biases1[i]));
         free(tmp);
-        p += sizeofmatrix(n.biases[i]);
+        p += sizeofmatrix(n.biases1[i]);
 
-        tmp = serializeMatrix(n.activations[i]);
-        memcpy(p, tmp, sizeofmatrix(n.activations[i]));
+        tmp = serializeMatrix(n.activations1[i]);
+        memcpy(p, tmp, sizeofmatrix(n.activations1[i]));
         free(tmp);
-        p += sizeofmatrix(n.activations[i]);
+        p += sizeofmatrix(n.activations1[i]);
 
-        tmp = serializeMatrix(n.preactivations[i]);
-        memcpy(p, tmp, sizeofmatrix(n.preactivations[i]));
+        tmp = serializeMatrix(n.preactivations1[i]);
+        memcpy(p, tmp, sizeofmatrix(n.preactivations1[i]));
         free(tmp);
-        p += sizeofmatrix(n.preactivations[i]);
+        p += sizeofmatrix(n.preactivations1[i]);
     }
 
-    tmp = serializeMatrix(n.activations[n.layers - 1]);
-    memcpy(p, tmp, sizeofmatrix(n.activations[n.layers - 1]));
+    tmp = serializeMatrix(n.activations1[n.layers - 1]);
+    memcpy(p, tmp, sizeofmatrix(n.activations1[n.layers - 1]));
     free(tmp);
 
     return bytes;
 }
 
-Network deserializeNetwork(unsigned char* m) {
+Network deserializeNet(unsigned char* m) {
     Network n = {0};
     unsigned char* p = m;
 
@@ -226,26 +226,26 @@ Network deserializeNetwork(unsigned char* m) {
     memcpy(n.size, p, n.layers * sizeof(int));
     p += n.layers * sizeof(int);
 
-    n.weights = malloc(layersAdjusted * sizeof(Matrix));
-    n.biases = malloc(layersAdjusted * sizeof(Matrix));
-    n.activations = malloc(n.layers * sizeof(Matrix));
-    n.preactivations = malloc(layersAdjusted * sizeof(Matrix));
+    n.weights1 = malloc(layersAdjusted * sizeof(Matrix));
+    n.biases1 = malloc(layersAdjusted * sizeof(Matrix));
+    n.activations1 = malloc(n.layers * sizeof(Matrix));
+    n.preactivations1 = malloc(layersAdjusted * sizeof(Matrix));
 
     for (int i = 0; i < layersAdjusted; i++) {
-        n.weights[i] = deserializeMatrix(p);
-        p += sizeofmatrix(n.weights[i]);
+        n.weights1[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.weights1[i]);
 
-        n.biases[i] = deserializeMatrix(p);
-        p += sizeofmatrix(n.biases[i]);
+        n.biases1[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.biases1[i]);
 
-        n.activations[i] = deserializeMatrix(p);
-        p += sizeofmatrix(n.activations[i]);
+        n.activations1[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.activations1[i]);
 
-        n.preactivations[i] = deserializeMatrix(p);
-        p += sizeofmatrix(n.preactivations[i]);
+        n.preactivations1[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.preactivations1[i]);
     }
 
-    n.activations[layersAdjusted] = deserializeMatrix(p);
+    n.activations1[layersAdjusted] = deserializeMatrix(p);
 
 	return n;
 }

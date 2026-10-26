@@ -20,8 +20,8 @@ void freeNet(Network* net);
 
 void printNet(Network net);
 
-unsigned char* serializeNetwork(Network n);
+unsigned char* serializeNet(Network n);
 
-Network deserializeNetwork(unsigned char* m);
+Network deserializeNet(unsigned char* m);
 
 #endif

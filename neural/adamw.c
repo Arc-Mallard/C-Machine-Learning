@@ -12,8 +12,8 @@ AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust)
 	};  // Who needs error handling anyways?
 	for (int i = 0; i < layersAdjust; i++) {
-		stateAssign(&s.frstMomentWght[i], net.weights[i]); stateAssign(&s.scndMomentWght[i], net.weights[i]);
-		stateAssign(&s.frstMomentBias[i], net.biases[i]); stateAssign(&s.scndMomentBias[i], net.biases[i]);
+		stateAssign(&s.frstMomentWght[i], net.weights1[i]); stateAssign(&s.scndMomentWght[i], net.weights1[i]);
+		stateAssign(&s.frstMomentBias[i], net.biases1[i]); stateAssign(&s.scndMomentBias[i], net.biases1[i]);
 	} return s;
 }
 
@@ -32,8 +32,8 @@ void adamwOptimize(AdamwState* state, Network* net, Matrix wghtGrad[], Matrix bi
 	state -> params.step++;
 	float frstPowf = 1 - powf(state -> params.frstDecay, state -> params.step), scndPowf = 1 - powf(state -> params.scndDecay, state -> params.step);
 	for (int i = 0; i < net->layers - 1; i++) {
-		adamwStep(state -> params, state -> frstMomentWght[i], state -> scndMomentWght[i], wghtGrad[i], net->weights[i], frstPowf, scndPowf, 1);
-		adamwStep(state -> params, state -> frstMomentBias[i], state -> scndMomentBias[i], biasGrad[i], net->biases[i], frstPowf, scndPowf, 0);
+		adamwStep(state -> params, state -> frstMomentWght[i], state -> scndMomentWght[i], wghtGrad[i], net -> weights1[i], frstPowf, scndPowf, 1);
+		adamwStep(state -> params, state -> frstMomentBias[i], state -> scndMomentBias[i], biasGrad[i], net -> biases1[i], frstPowf, scndPowf, 0);
 	}
 }
 

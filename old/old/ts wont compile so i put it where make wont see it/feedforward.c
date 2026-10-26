@@ -1,5 +1,4 @@
 // ALL matrices below should be treated as vectors
-#include "types.h"
 #include "feedforward.h"
 #include "../matrix/matrix.h"
 #include "../neural/normal.h"

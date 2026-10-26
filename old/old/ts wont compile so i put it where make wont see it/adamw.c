@@ -2,24 +2,24 @@
 //#include "feedforward.h"
 #include <math.h>
 #include <stdlib.h>
-#include "adamw_old.h"
+#include "adamw.h"
 
-Old_AdamwState old_adamwInit(Old_Network net, float learningRate, float weightDecay) {
+AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 	int layersAdjust = net.layers - 1;
-	Old_AdamwState s = {
-		(Old_AdamwParams) {learningRate, weightDecay, 0.9f, 0.999f, 0.0f},
+	AdamwState s = {
+		(AdamwParams) {learningRate, weightDecay, 0.9f, 0.999f, 0.0f},
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust),
 		malloc(sizeof(Matrix) * layersAdjust), malloc(sizeof(Matrix) * layersAdjust)
 	};  // Who needs error handling anyways?
 	for (int i = 0; i < layersAdjust; i++) {
-		old_stateAssign(&s.frstMomentWght[i], net.weights[i]); old_stateAssign(&s.scndMomentWght[i], net.weights[i]);
-		old_stateAssign(&s.frstMomentBias[i], net.biases[i]); old_stateAssign(&s.scndMomentBias[i], net.biases[i]);
+		stateAssign(&s.frstMomentWght[i], net.weights[i]); stateAssign(&s.scndMomentWght[i], net.weights[i]);
+		stateAssign(&s.frstMomentBias[i], net.biases[i]); stateAssign(&s.scndMomentBias[i], net.biases[i]);
 	} return s;
 }
 
-void old_stateAssign(Matrix* s, Matrix m) {*s = (Matrix) {m.w, m.h, m.n, (float*) calloc(m.n, sizeof(float))};}
+void stateAssign(Matrix* s, Matrix m) {*s = (Matrix) {m.w, m.h, m.n, (float*) calloc(m.n, sizeof(float))};}
 
-void old_adamwFree(Old_AdamwState* state, Old_Network net) {
+void adamwFree(AdamwState* state, Network net) {
 	for (int i = 0; i < net.layers - 1; i++) {
 		free(state -> frstMomentWght[i].d); free(state -> scndMomentWght[i].d);
 		free(state -> frstMomentBias[i].d); free(state -> scndMomentBias[i].d);
@@ -28,16 +28,16 @@ void old_adamwFree(Old_AdamwState* state, Old_Network net) {
 	free(state -> frstMomentBias); free(state -> scndMomentBias);
 }
 
-void old_adamwOptimize(Old_AdamwState* state, Old_Network* net, Matrix wghtGrad[], Matrix biasGrad[]) {
+void adamwOptimize(AdamwState* state, Network* net, Matrix wghtGrad[], Matrix biasGrad[]) {
 	state -> params.step++;
 	float frstPowf = 1 - powf(state -> params.frstDecay, state -> params.step), scndPowf = 1 - powf(state -> params.scndDecay, state -> params.step);
 	for (int i = 0; i < net->layers - 1; i++) {
-		old_adamwStep(state -> params, state -> frstMomentWght[i], state -> scndMomentWght[i], wghtGrad[i], net->weights[i], frstPowf, scndPowf, 1);
-		old_adamwStep(state -> params, state -> frstMomentBias[i], state -> scndMomentBias[i], biasGrad[i], net->biases[i], frstPowf, scndPowf, 0);
+		adamwStep(state -> params, state -> frstMomentWght[i], state -> scndMomentWght[i], wghtGrad[i], net->weights[i], frstPowf, scndPowf, 1);
+		adamwStep(state -> params, state -> frstMomentBias[i], state -> scndMomentBias[i], biasGrad[i], net->biases[i], frstPowf, scndPowf, 0);
 	}
 }
 
-void old_adamwStep(Old_AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix w1, float frstPowf, float scndPowf, int w) {
+void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix w1, float frstPowf, float scndPowf, int w) {
 	float frstBias, scndBias;
 	for (int i = 0; i < f.n; i++) {
 		// m1 = b1 * m0 + (1 - b1) * g1
