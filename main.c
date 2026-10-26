@@ -5,8 +5,8 @@
  *      Author: nicol, eepy :D
  */
 
-#include "neural/feedforward.h"
 #include "neural/normal.h"
+#include "neural/feedforward.h"
 #include <time.h>
 
 int main() {

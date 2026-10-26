@@ -1,10 +1,11 @@
 // ALL matrices below should be treated as vectors
+#include "types.h"
 #include "feedforward.h"
+#include "adamw.h"
 #include "../matrix/matrix.h"
 #include "../neural/normal.h"
 #include "../neural/costs.h"
 #include "../neural/activations.h"
-#include "adamw.h"
 
 Network init(int layers, int* size, float deviation) {
     int layersAdjust = layers - 1;

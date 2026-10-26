@@ -8,33 +8,47 @@
 
 Network init(int layers, int* size, float deviation) {
     int layersAdjust = layers - 1;
-    Matrix* wghts = calloc(layersAdjust, sizeof(Matrix));
-    Matrix* biases = calloc(layersAdjust, sizeof(Matrix));
-    Matrix* activations = calloc(layers, sizeof(Matrix));
-    Matrix* preactivations = calloc(layersAdjust, sizeof(Matrix));
-    activations[0] = initEmptyMatrix(1, size[0]);
+    Matrix* wghts1 = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* wghts2 = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* biases1 = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* biases2 = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* activations1 = calloc(layers, sizeof(Matrix));
+    Matrix* activations2 = calloc(layers, sizeof(Matrix));
+    Matrix* preactivations1 = calloc(layersAdjust, sizeof(Matrix));
+    Matrix* preactivations2 = calloc(layersAdjust, sizeof(Matrix));
+    activations1[0] = initEmptyMatrix(1, size[0]);
+    activations2[0] = initEmptyMatrix(1, size[0]);
 
     for (int i = 1; i < layers; i++) {
-        wghts[i - 1] = initNormal(size[i - 1], size[i], 0.0, deviation);
-        biases[i - 1] = initEmptyMatrix(1, size[i]);
-        activations[i] = initEmptyMatrix(1, size[i]);
-        preactivations[i - 1] = initEmptyMatrix(1, size[i]);
+        wghts1[i - 1] = initNormal(size[i - 1], size[i], 0.0, deviation);
+        wghts2[i - 1] = initNormal(size[i - 1], size[i], 0.0, deviation);
+        biases1[i - 1] = initEmptyMatrix(1, size[i]);
+        biases2[i - 1] = initEmptyMatrix(1, size[i]);
+        activations1[i] = initEmptyMatrix(1, size[i]);
+        activations2[i] = initEmptyMatrix(1, size[i]);
+        preactivations1[i - 1] = initEmptyMatrix(1, size[i]);
+        preactivations2[i - 1] = initEmptyMatrix(1, size[i]);
     }
 
-	return (Network) {layers, size, wghts, biases, activations, preactivations};
+	return (Network) {layers, size, wghts1, wghts2, biases1, biases2, activations1, activations2, preactivations1, preactivations2, (AdamwState) {0}};
 }
 
 Network initEmptyNet(int layers, int* size) {
 	int* s = malloc(sizeof(int) * layers);
 	s[0] = size[0];
-	int layersAdjust = layers - 1; Matrix* wghts = malloc(layersAdjust * sizeof(Matrix));
-	Matrix* biases = malloc(layersAdjust * sizeof(Matrix)); Matrix* activations = malloc(layers * sizeof(Matrix));
-	Matrix* preactivations = malloc(layersAdjust * sizeof(Matrix)); activations[0] = initEmptyMatrix(1, size[0]);
+	int layersAdjust = layers - 1;
+	Matrix* wghts1 = malloc(layersAdjust * sizeof(Matrix)); Matrix* wghts2 = malloc(layersAdjust * sizeof(Matrix));
+	Matrix* biases1 = malloc(layersAdjust * sizeof(Matrix)); Matrix* biases2 = malloc(layersAdjust * sizeof(Matrix));
+	Matrix* activations1 = malloc(layers * sizeof(Matrix)); Matrix* activations2 = malloc(layers * sizeof(Matrix));
+	Matrix* preactivations1 = malloc(layersAdjust * sizeof(Matrix)); Matrix* preactivations2 = malloc(layersAdjust * sizeof(Matrix));
+	activations1[0] = initEmptyMatrix(1, size[0]); activations2[0] = initEmptyMatrix(1, size[0]);
 	for (int i = 1; i < layers; i++) {
-		wghts[i-1] = initEmptyMatrix(size[i-1], size[i]); biases[i-1] = initEmptyMatrix(1, size[i]);
-		activations[i] = initEmptyMatrix(1, size[i]); preactivations[i-1] = initEmptyMatrix(1, size[i]);
+		wghts1[i-1] = initEmptyMatrix(size[i-1], size[i]); wghts2[i-1] = initEmptyMatrix(size[i-1], size[i]);
+		biases1[i-1] = initEmptyMatrix(1, size[i]); biases2[i-1] = initEmptyMatrix(1, size[i]);
+		activations1[i] = initEmptyMatrix(1, size[i]); activations2[i] = initEmptyMatrix(1, size[i]);
+		preactivations1[i-1] = initEmptyMatrix(1, size[i]); preactivations2[i-1] = initEmptyMatrix(1, size[i]);
 		s[i] = size[i];
-	} return (Network) {layers, s, wghts, biases, activations, preactivations};
+	} return (Network) {layers, s, wghts1, wghts2, biases1, biases2, activations1, activations2, preactivations1, preactivations2, (AdamwState) {0}};
 }
 Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations1[0].d, input.d, input.n * sizeof(float));
