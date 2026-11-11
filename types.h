@@ -15,6 +15,9 @@ typedef struct {
 	AdamwParams params;
 	Matrix* frstMomentWght; Matrix* scndMomentWght;
 	Matrix* frstMomentBias; Matrix* scndMomentBias;
+	// Swiglu additions
+	Matrix* frstMomentWght2; Matrix* scndMomentWght2;
+	Matrix* frstMomentBias2; Matrix* scndMomentBias2;
 } AdamwState;
 
 typedef struct {

@@ -14,6 +14,9 @@ AdamwState adamwInit(Network net, float learningRate, float weightDecay) {
 	for (int i = 0; i < layersAdjust; i++) {
 		stateAssign(&s.frstMomentWght[i], net.weights1[i]); stateAssign(&s.scndMomentWght[i], net.weights1[i]);
 		stateAssign(&s.frstMomentBias[i], net.biases1[i]); stateAssign(&s.scndMomentBias[i], net.biases1[i]);
+
+		stateAssign(&s.frstMomentWght2[i], net.weights2[i]); stateAssign(&s.scndMomentWght2[i], net.weights2[i]);
+		stateAssign(&s.frstMomentBias2[i], net.biases2[i]); stateAssign(&s.scndMomentBias2[i], net.biases2[i]);
 	} return s;
 }
 
