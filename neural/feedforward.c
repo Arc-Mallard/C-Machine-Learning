@@ -88,7 +88,7 @@ void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
         }
     }
 
-    adamwOptimize(adamw, net, weightGrad, biasGrad);
+    adamwOptimize(adamw, net, weightGrad, biasGrad, weightGrad, biasGrad);
 
     for (int i = 0; i < net->layers - 1; i++) {
         free(weightGrad[i].d);

@@ -11,6 +11,6 @@ void adamwFree(AdamwState* state, Network net);
 
 void adamwStep(AdamwParams p, Matrix f, Matrix s, Matrix g, Matrix w1, float frstPowf, float scndPowf, int w);
 
-void adamwOptimize(AdamwState* state, Network* net, Matrix wghtGrad[], Matrix biasGrad[]);
+void adamwOptimize(AdamwState* state, Network* net, Matrix wghtGrad[], Matrix biasGrad[], Matrix wghtGrad2[], Matrix biasGrad2[]);
 
 #endif
