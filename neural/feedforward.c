@@ -52,30 +52,31 @@ Network initEmptyNet(int layers, int* size) {
 Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);
+
 	for (int i = 0; i < net.layers-1; i++) {
 		Matrix product = multiply(net.weights1[i], current);
 		Matrix gproduct = multiply(net.weights2[i], current);
 		Matrix sum = addMatrix(net.biases1[i], product);
 		Matrix gsum = addMatrix(net.biases2[i], gproduct);
-		//net.preactivations[i] = copyMatrix(sum);
+
 		memcpy(net.preactivations[i].d, sum.d, sum.n * sizeof(float));
 		memcpy(net.gpreactivations[i].d, gsum.d, gsum.n * sizeof(float));
+
 		for (int j = 0; j < sum.n; j++) {
-			//sum.d[j] = sigmoid(sum.d[j]);
 			sum.d[j] = swiglu(sum.d[j], gsum.d[j]);
 		}
-		//net.activations[i+1] = copyMatrix(sum);
+
 		memcpy(net.activations[i+1].d, sum.d, sum.n * sizeof(float));
 		free(product.d); free(current.d); free(gproduct.d); free(gsum.d);
 		current = sum;
-	} return current;
+	}
+
+	return current;
 }
 
 void backward(AdamwState* adamw, Network* net, Matrix output, Matrix expected) {
-    //Matrix delta = sccDerivitive(output, expected);
     int layersAdjusted = net->layers - 1;
     Matrix da = mseDerivative(output, expected);
-    //AdamwState adamw = adamwInit(net, 0.01, 0.1);
 
     Matrix w1Grad[layersAdjusted], b1Grad[layersAdjusted], w2Grad[layersAdjusted], b2Grad[layersAdjusted];
 
