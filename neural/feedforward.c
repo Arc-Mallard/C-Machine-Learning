@@ -22,6 +22,7 @@ Network init(int layers, int* size, float deviation) {
         biases1[i - 1] = initEmptyMatrix(1, size[i]);
         biases2[i - 1] = initEmptyMatrix(1, size[i]);
         activations[i] = initEmptyMatrix(1, size[i]);
+        preactivations[i - 1] = initEmptyMatrix(1, size[i]);
     }
 
 	return (Network) {layers, size, wghts1, wghts2, biases1, biases2, activations, preactivations, (AdamwState) {0}};
