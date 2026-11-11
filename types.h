@@ -24,7 +24,7 @@ typedef struct {
 	int layers; int* size; Matrix* weights1; Matrix* weights2;
 	// These matrices below are actually all vectors
 	Matrix* biases1; Matrix* biases2;
-	Matrix* activations; Matrix* preactivations;
+	Matrix* activations; Matrix* preactivations; Matrix* gpreactivations;
 
 	AdamwState adamw;
 } Network;
