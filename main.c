@@ -9,6 +9,8 @@
 #include "neural/feedforward.h"
 #include <time.h>
 
+#define N_DATA 1000
+
 int main() {
     srand(time(NULL));
 
@@ -77,9 +79,9 @@ int main() {
 	*/
 
 	printf("training\n");
-	Matrix* inputs = malloc(sizeof(Matrix)*500);
-	Matrix* targets = malloc(sizeof(Matrix)*500);
-	for (int i = 0; i < 500; i++) {
+	Matrix* inputs = malloc(sizeof(Matrix)*N_DATA);
+	Matrix* targets = malloc(sizeof(Matrix)*N_DATA);
+	for (int i = 0; i < N_DATA; i++) {
 		inputs[i] = initEmptyMatrix(1, 2);
 		targets[i] = initEmptyMatrix(1, 1);
 		for (int j = 0; j < inputs[i].n; j++) {
@@ -87,7 +89,7 @@ int main() {
 		} targets[i].d[0] = inputs[i].d[0] + inputs[i].d[1];
 	}
 
-	train(&net, inputs, targets, 500, 100);
+	train(&net, inputs, targets, N_DATA, 100);
 
 	printNet(net);
 	printf("predicting: \n");

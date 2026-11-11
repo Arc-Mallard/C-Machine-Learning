@@ -152,9 +152,12 @@ Matrix predict(Network net, Matrix input) {
 
 void freeNet(Network* net) {
 	freeMatrixArr(net -> weights1, net -> layers - 1);
+	freeMatrixArr(net -> weights2, net -> layers - 1);
 	freeMatrixArr(net -> biases1, net -> layers - 1);
+	freeMatrixArr(net -> biases2, net -> layers - 1);
 	freeMatrixArr(net -> activations, net -> layers);
 	freeMatrixArr(net -> preactivations, net -> layers - 1);
+	freeMatrixArr(net -> gpreactivations, net -> layers - 1);
 }
 
 void printNet(Network net) {
@@ -202,9 +205,12 @@ unsigned char* serializeNet(Network n) {
 
     for (int i = 0; i < n.layers - 1; i++) {
         size += sizeofmatrix(n.weights1[i]);
+        size += sizeofmatrix(n.weights2[i]);
         size += sizeofmatrix(n.biases1[i]);
+        size += sizeofmatrix(n.biases2[i]);
         size += sizeofmatrix(n.activations[i]);
         size += sizeofmatrix(n.preactivations[i]);
+        size += sizeofmatrix(n.gpreactivations[i]);
     }
 
     size += sizeofmatrix(n.activations[n.layers - 1]);
@@ -229,6 +235,16 @@ unsigned char* serializeNet(Network n) {
         free(tmp);
         p += sizeofmatrix(n.biases1[i]);
 
+        tmp = serializeMatrix(n.weights2[i]);
+        memcpy(p, tmp, sizeofmatrix(n.weights2[i]));
+        free(tmp);
+        p += sizeofmatrix(n.weights2[i]);
+
+        tmp = serializeMatrix(n.biases2[i]);
+        memcpy(p, tmp, sizeofmatrix(n.biases2[i]));
+        free(tmp);
+        p += sizeofmatrix(n.biases2[i]);
+
         tmp = serializeMatrix(n.activations[i]);
         memcpy(p, tmp, sizeofmatrix(n.activations[i]));
         free(tmp);
@@ -238,6 +254,11 @@ unsigned char* serializeNet(Network n) {
         memcpy(p, tmp, sizeofmatrix(n.preactivations[i]));
         free(tmp);
         p += sizeofmatrix(n.preactivations[i]);
+
+        tmp = serializeMatrix(n.gpreactivations[i]);
+        memcpy(p, tmp, sizeofmatrix(n.gpreactivations[i]));
+        free(tmp);
+        p += sizeofmatrix(n.gpreactivations[i]);
     }
 
     tmp = serializeMatrix(n.activations[n.layers - 1]);
@@ -260,9 +281,12 @@ Network deserializeNet(unsigned char* m) {
     p += n.layers * sizeof(int);
 
     n.weights1 = malloc(layersAdjusted * sizeof(Matrix));
+    n.weights2 = malloc(layersAdjusted * sizeof(Matrix));
     n.biases1 = malloc(layersAdjusted * sizeof(Matrix));
+    n.biases2 = malloc(layersAdjusted * sizeof(Matrix));
     n.activations = malloc(n.layers * sizeof(Matrix));
     n.preactivations = malloc(layersAdjusted * sizeof(Matrix));
+    n.gpreactivations = malloc(layersAdjusted * sizeof(Matrix));
 
     for (int i = 0; i < layersAdjusted; i++) {
         n.weights1[i] = deserializeMatrix(p);
@@ -271,11 +295,20 @@ Network deserializeNet(unsigned char* m) {
         n.biases1[i] = deserializeMatrix(p);
         p += sizeofmatrix(n.biases1[i]);
 
+        n.weights2[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.weights2[i]);
+
+        n.biases2[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.biases2[i]);
+
         n.activations[i] = deserializeMatrix(p);
         p += sizeofmatrix(n.activations[i]);
 
         n.preactivations[i] = deserializeMatrix(p);
         p += sizeofmatrix(n.preactivations[i]);
+
+        n.gpreactivations[i] = deserializeMatrix(p);
+        p += sizeofmatrix(n.gpreactivations[i]);
     }
 
     n.activations[layersAdjusted] = deserializeMatrix(p);
