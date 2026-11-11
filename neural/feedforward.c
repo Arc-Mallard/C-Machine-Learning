@@ -57,7 +57,7 @@ Matrix forward(Network net, Matrix input) {
 		memcpy(net.preactivations[i].d, sum.d, sum.n * sizeof(float));
 		for (int j = 0; j < sum.n; j++) {
 			//sum.d[j] = sigmoid(sum.d[j]);
-			sum.d[j] = swiglu(sum.d[i], gsum.d[i]);
+			sum.d[j] = swiglu(sum.d[j], gsum.d[j]);
 		}
 		//net.activations[i+1] = copyMatrix(sum);
 		memcpy(net.activations[i+1].d, sum.d, sum.n * sizeof(float));
