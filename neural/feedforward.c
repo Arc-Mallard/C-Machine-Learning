@@ -50,11 +50,14 @@ Matrix forward(Network net, Matrix input) {
 	Matrix current = copyMatrix(input);
 	for (int i = 0; i < net.layers-1; i++) {
 		Matrix product = multiply(net.weights1[i], current);
+		Matrix gproduct = multiply(net.weights2[i], current);
 		Matrix sum = addMatrix(net.biases1[i], product);
+		Matrix gsum = addMatrix(net.biases2[i], gproduct);
 		//net.preactivations[i] = copyMatrix(sum);
 		memcpy(net.preactivations[i].d, sum.d, sum.n * sizeof(float));
 		for (int j = 0; j < sum.n; j++) {
-			sum.d[j] = sigmoid(sum.d[j]);
+			//sum.d[j] = sigmoid(sum.d[j]);
+			sum.d[j] = swiglu(sum.d[i], gsum.d[i]);
 		}
 		//net.activations[i+1] = copyMatrix(sum);
 		memcpy(net.activations[i+1].d, sum.d, sum.n * sizeof(float));

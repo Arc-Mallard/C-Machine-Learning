@@ -98,6 +98,10 @@ Matrix add(Matrix m, float a) {
 }
 
 Matrix addMatrix(Matrix m1, Matrix m2) {
+    if (m1.n != m2.n) {
+        perror("addMatrix");
+        return (Matrix) {0};
+    }
 	Matrix a = {m1.w, m1.h, m1.n, malloc(m1.n * sizeof(float))};
 	for (int i = 0; i < m1.n; i++) {a.d[i] = m1.d[i] + m2.d[i];}
 	return a;
