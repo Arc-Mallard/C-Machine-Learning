@@ -40,11 +40,11 @@ Network initEmptyNet(int layers, int* size) {
 	for (int i = 1; i < layers; i++) {
 		wghts1[i-1] = initEmptyMatrix(size[i-1], size[i]); wghts2[i-1] = initEmptyMatrix(size[i-1], size[i]);
 		biases1[i-1] = initEmptyMatrix(1, size[i]); biases2[i-1] = initEmptyMatrix(1, size[i]);
-		activations[i] = initEmptyMatrix(1, size[i]);
-		preactivations[i-1] = initEmptyMatrix(1, size[i]);
+		activations[i] = initEmptyMatrix(1, size[i]); preactivations[i-1] = initEmptyMatrix(1, size[i]);
 		s[i] = size[i];
 	} return (Network) {layers, s, wghts1, wghts2, biases1, biases2, activations, preactivations, (AdamwState) {0}};
 }
+
 Matrix forward(Network net, Matrix input) {
 	memcpy(net.activations[0].d, input.d, input.n * sizeof(float));
 	Matrix current = copyMatrix(input);
